@@ -366,6 +366,16 @@ var functions = {
         })
     },
 
+    deleteRecordById: function (req,res) {
+        ReportRecord.remove({'examID': req.body.examID}).exec(function (err, doc){
+            if(err){
+                console.log(err);
+                return;
+            }
+            sendJSONresponse(res,200,doc);
+        })
+    },
+
     getAllItem: function(req,res){
         var sendItems = [];
         if (req.body.type === 'report') {

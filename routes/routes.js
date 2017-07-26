@@ -41,6 +41,7 @@ router.post('/addreportrecord', actions.addReportRecord);
 router.post('/getrecord', actions.getRecord);
 router.get('/getallrecord', actions.getAllRecord);
 router.get('/deleteallrecord', actions.deleteAllRecord);
+router.post('/delete_record_ID', actions.deleteRecordById);
 
 router.post('/add_group', actions.addGroup);
 router.post('/update_group', actions.updateGroup);
