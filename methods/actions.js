@@ -465,7 +465,10 @@ var functions = {
         Item.findOneAndRemove(query,function(err,doc){
             if (err) throw err;
             console.log('delete success');
-            sendJSONresponse(res,200,{success: true})
+        });
+        ReportRecord.remove(query, function (err,doc) {
+            if (err) throw err;
+            sendJSONresponse(res, 200 , doc);
         })
     },
 
