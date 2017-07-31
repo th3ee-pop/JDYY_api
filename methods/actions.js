@@ -70,7 +70,7 @@ var functions = {
                     if(isMatch && !err) {
                         var token = jwt.encode(user, config.secret);
                         res.json({username:user.name, success: true, token: token, userlevel: user.level,
-                            reportAct: user.reportAct, usertype: user.usertype});
+                            reportAct: user.reportAct, usertype: user.usertype, hospital: user.hospital});
                     } else {
                         console.log(err);
                         return res.status(403).send({username:user.name, success: false, msg: 'Authenticaton failed, wrong password.'});
@@ -99,7 +99,8 @@ var functions = {
                 phone: req.body.phone,
                 address: req.body.address,
                 usertype: req.body.usertype,
-                reportAct: []
+                reportAct: [],
+                hospital: req.body.hospital,
             });
 
             newUser.save(function(err, newUser){
@@ -172,6 +173,9 @@ var functions = {
             reason: req.body.reason,
             od: req.body.originaldiagnosis,
             status: req.body.status,
+            transferstatus: '--',
+            destination: '--',
+            applyDoc: '--',
             time: req.body.time,
             applytime: req.body.applytime,
             user: req.body.user,

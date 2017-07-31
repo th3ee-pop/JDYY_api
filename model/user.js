@@ -38,10 +38,13 @@ var userSchema = new Schema({
         required: true
     },
     address: {
-      type: String,
+      type: String
     },
     reportAct: {
         type: Array
+    },
+    hospital: {
+        type: String
     }
 });
 

@@ -15,11 +15,17 @@ var itemSchema = new Schema({
         examContent: {type: String},
         examPart: {type: String},
         sendHospital: {type: String},
+        destination: {type: String},
         reportDoc: {type: String},
         reporttime: {type: String},
         time: {type: String},
         status: {type: String},
+        applyDoc: {type: String},
+        transReason: {type: String},
         applystatus: {type: String},
+        transferstatus: {type: String},
+        rejection: {type: String},
+        owner: {type: String}
     }
 );
 

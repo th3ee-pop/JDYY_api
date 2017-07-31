@@ -1,5 +1,6 @@
 var express = require('express');
 var actions = require('../methods/actions');
+var Newactions = require('../methods/NewActions');
 
 var router = express.Router();
 
@@ -50,5 +51,17 @@ router.get('/get_group', actions.getGroup);
 router.post('/get_group_by_name', actions.getGroupByName);
 
 router.get('/get_status_count', actions.getCount);
+
+
+router.post('/get_local_items', Newactions.getLocalItem);
+router.post('/get_sending_items', Newactions.getSendingItem);
+router.post('/get_applications', Newactions.getApplication);
+router.post('/send_application', Newactions.sendApplication);
+router.post('/get_other_items', Newactions.getOtherItem);
+router.post('/accept_item', Newactions.acceptApplication);
+router.post('/reject_item', Newactions.rejectApplication);
+router.post('/accept_rejection', Newactions.AcceptRejection);
+router.post('/pick_item', Newactions.PickItem);
+router.post('/get_picked_items', Newactions.GetOwnItems);
 
 module.exports = router;
