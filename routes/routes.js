@@ -64,4 +64,10 @@ router.post('/accept_rejection', Newactions.AcceptRejection);
 router.post('/pick_item', Newactions.PickItem);
 router.post('/get_picked_items', Newactions.GetOwnItems);
 
+router.post('/sendMessage', actions.sendMessage);
+router.post('/getAllMessage', actions.getAllMessage);
+router.post('/getMessage', actions.getNewMessage);
+router.post('/updateMessage', actions.updateMessage);
+router.post('/deleteMessage', actions.deleteMessage);
+
 module.exports = router;

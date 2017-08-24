@@ -1,4 +1,5 @@
 // var email   = require('emailjs/email');
+var Message = require('../model/message');
 var User = require('../model/user');
 var Item = require('../model/item');
 var Hero = require('../model/hero');
@@ -671,7 +672,64 @@ var functions = {
             ItemCount.push({'待审核': count});
         });
         res.json({'ItemCount': ItemCount});
-    }
+    },
+
+    sendMessage: function(req, res){
+        console.log('sendMessage!');
+        var newMessage = Message(req.body);
+        newMessage.state = false;
+        console.log(newMessage);
+        newMessage.save(function(err){
+            if(err){
+                sendJSONresponse(res,404,err);
+            }
+            else{
+                sendJSONresponse(res,200,{success: true});
+            }
+    })
+    },
+
+    getAllMessage: function (req, res) {
+        console.log('getAllmessage');
+        console.log(req.body);
+        Message.find({'to':req.body.to}).exec(function (err , messages){
+            console.log(messages);
+            if(err){
+                console.log(err);
+                return;
+            }
+            sendJSONresponse(res,200,messages);
+        });
+    },
+    getNewMessage: function(req,res){
+        Message.find({'to':req.body.to,'state':false}).exec(function (err , msg){
+            if(err){
+                console.log(err);
+                return;
+            }
+
+            sendJSONresponse(res,200,msg);
+        });
+    },
+    updateMessage: function (req,res) {
+        console.log('updateMessage');
+        console.log(req.body);
+        Message.findOneAndUpdate({'_id':req.body._id}, {'state': req.body.state}, function (err,doc) {
+            if (err) throw err;
+            sendJSONresponse(res,200,{success:true})
+        })
+    },
+
+    deleteMessage: function (req,res) {
+        console.log('remove'+req.body);
+        Message.remove(req.body._id).exec(function (err, items){
+            if(err){
+                console.log(err);
+                return;
+            }
+            sendJSONresponse(res,200,items);
+        })
+    },
 
 };
 
