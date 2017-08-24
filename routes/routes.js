@@ -50,4 +50,10 @@ router.post('/get_group_by_name', actions.getGroupByName);
 
 router.get('/get_status_count', actions.getCount);
 
+router.post('/sendMessage', actions.sendMessage);
+router.post('/getAllMessage', actions.getAllMessage);
+router.post('/getMessage', actions.getNewMessage);
+router.post('/updateMessage', actions.updateMessage);
+router.post('/deleteMessage', actions.deleteMessage);
+
 module.exports = router;
