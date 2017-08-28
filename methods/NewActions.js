@@ -7,6 +7,7 @@ var Hero = require('../model/hero');
 var Report = require('../model/report');
 var ReportRecord = require('../model/reportRecord');
 var Group = require('../model/group');
+var ReportPic = require('../model/reportPic');
 var mongoose = require('mongoose');
 var config = require('../config/database');
 var jwt = require('jwt-simple');
@@ -146,7 +147,37 @@ var functions = {
                 sendJSONresponse(res, 200, items)
             }
         })
-    }
+    },
+
+    SavePic: function (req, res) {
+        if(!req.body.examID){
+            console.log(req.body);
+            res.json({success: false, msg: 'You must have a examID'});
+        }
+        else{
+            console.log(req.body);
+            var newItem = ReportPic(req.body);
+            newItem.save(function (err) {
+                if(err){
+                    sendJSONresponse(res,404,err);
+                }
+                else{
+                    sendJSONresponse(res,200,{success: true});
+                }
+            })
+        }
+    },
+
+    GetPic: function (req, res) {
+        ReportPic.find({'examID': req.body.examID}
+        ).exec(function (err, items) {
+            if (err) {
+                senderror(err);
+            } else {
+                sendJSONresponse(res, 200, items)
+            }
+        })
+    },
 };
 
 module.exports = functions;

@@ -21,7 +21,7 @@ var reportSchema = new Schema({
         diagnosis: {type: String},
         status: {type: String},
         reportDoc: {type: String},
-        verifyDoc: {type: String}
+        verifyDoc: {type: String},
     }
 );
 

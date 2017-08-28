@@ -64,4 +64,7 @@ router.post('/accept_rejection', Newactions.AcceptRejection);
 router.post('/pick_item', Newactions.PickItem);
 router.post('/get_picked_items', Newactions.GetOwnItems);
 
+router.post('/save_pic', Newactions.SavePic);
+router.post('/get_pic', Newactions.GetPic);
+
 module.exports = router;
