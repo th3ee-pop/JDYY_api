@@ -7,13 +7,24 @@
 
 var Meet = require('../model/meetItem');
 var ScriptReport = require('../model/scriptReport');
-var ReportPic = require('../model/reportPic');
+var Report = require('../model/report');
+var Item = require('../model/item');
+var ReportRecord = require('../model/reportRecord');
 var mongoose = require('mongoose');
 var config = require('../config/database');
 var jwt = require('jwt-simple');
 var nodemailer = require('nodemailer');
 var ejs = require('ejs');
 
+var getTime = function () {
+    // 格式化日期，获取今天的日期
+    var dates = new Date();
+    var year = dates.getFullYear();
+    var month = ( dates.getMonth() + 1 ) < 10 ? '0' + ( dates.getMonth() + 1 ) : ( dates.getMonth() + 1 );
+    var day = dates.getDate() < 10 ? '0' + dates.getDate() : dates.getDate();
+    var time = year + '-' + month + '-' + day;
+    return time;
+};
 
 var sendJSONresponse = function (res, status, content) {
     res.status(status);
@@ -32,7 +43,7 @@ var functions = {
             res.json({success: false, msg: 'There must be an examID'});
         } else {
             var meetingDate = req.body.date.replace(/-/g, '');
-            var meetingID = meetingDate + Math.random().toString(4).substr(2);
+            var meetingID = meetingDate + Math.random().toString(6).substr(2).slice(2,6);
             console.log(meetingID);
             var newItem = Meet({
                 examID: req.body.examID,
@@ -41,7 +52,7 @@ var functions = {
                 date: req.body.date,
                 owner: req.body.owner,
                 cooperator: req.body.cooperator,
-                status: req.body.status,
+                status: '进行中',
                 reason: req.body.reason
             });
             newItem.save(function (err) {
@@ -119,7 +130,7 @@ var functions = {
                     });
                     newItem.save(function (err) {
                         if(err) {
-                            sendJSONresponse(res, 404, err);
+                            senderror(err);
                         } else {
                             sendJSONresponse(res, 200, {success: true});
                         }
@@ -159,6 +170,67 @@ var functions = {
             else
             sendJSONresponse(res, 200, {update_success: true});
         })
+    },
+
+    submitScript: function (req, res) {
+        var report = new Report;
+       Item.findOne({'examID': req.body.examID}).exec(function (err, item) {
+           if (err) {
+               console.log(item);
+               senderror(err)
+           } else {
+               console.log(item);
+               report.patientID = item.patientID;
+               report.examID = item.examID;
+               report.name = item.name;
+               report.age = item.age;
+               report.gender = item.gender;
+               report.examContent = item.examContent;
+               report.examPart = item.examPart;
+               report.date = item.time;
+               report.verifyDoc = '暂无';
+               console.log('item found');
+           }
+       });
+       ScriptReport.findOne({'$and':[{'meetID': req.body.meetID},{'major': true}]}).exec(function (err, script) {
+           if (err) {
+               senderror(err)
+           } else {
+               report.status = '待审核';
+               report.description = script.description;
+               report.diagnosis = script.diagnosis;
+               report.reportDoc = script.owner;
+               report.reporttime = script.time;
+               console.log('meet found');
+           }
+       });
+       ScriptReport.findOneAndUpdate({'meetID': req.body.meetID}, {'status': '已关闭'}, function (err) {
+           if (err) {
+               senderror(err);
+           } else {
+               console.log('update meet success');
+           }
+       });
+       var newRecord = ReportRecord({
+           'examID': report.examID,
+           'operate_type': '生成报告',
+           'name': report.reportDoc,
+           'date': getTime()
+       });
+       newRecord.save(function (err) {
+           if(err) {
+               senderror(err);
+           } else {
+               console.log('update item');
+           }
+       });
+       Item.findOneAndUpdate({'examID': report.examID}, {'status': '诊断中' , 'applystatus': '诊断中'}, function (err) {
+           if (err)
+               senderror(err);
+           else {
+               sendJSONresponse(res,200,{update_item: true});
+           }
+       });
     }
 
 

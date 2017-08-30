@@ -78,5 +78,5 @@ router.post('/script_report', MeetActions.createScript);
 router.post('/get_script', MeetActions.getAllScript);
 router.post('/delete_script', MeetActions.deleteScript);
 router.post('/update_script', MeetActions.updateScript);
-
+router.post('/finish_meeting', MeetActions.submitScript);
 module.exports = router;
