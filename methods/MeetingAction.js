@@ -4,13 +4,9 @@
 /**
  * Created by th3ee on 7/30/17.
  */
-var User = require('../model/user');
-var Item = require('../model/item');
-var Hero = require('../model/hero');
-var Report = require('../model/report');
-var ReportRecord = require('../model/reportRecord');
-var Group = require('../model/group');
+
 var Meet = require('../model/meetItem');
+var ScriptReport = require('../model/scriptReport');
 var ReportPic = require('../model/reportPic');
 var mongoose = require('mongoose');
 var config = require('../config/database');
@@ -96,7 +92,78 @@ var functions = {
                 sendJSONresponse(res, 200, {delete_success: true});
             }
         })
+    },
+
+    //The api below are all about the script report
+    createScript: function (req, res) {
+        if(!req.body.examID || !req.body.meetID){
+            console.log(req.body);
+            res.json({success: false, msg: 'There must be an examID or meetID'});
+        } else {
+            var isMajor = true;
+            Meet.find({'meetID': req.body.meetID}).exec(function (err, meeting) {
+                if (err) {
+                    senderror(err);
+                } else {
+                    console.log(meeting[0].owner);
+                    isMajor = meeting[0].owner === req.body.completedBy;
+                    var newItem = ScriptReport({
+                        examID: req.body.examID,
+                        meetID: req.body.meetID,
+                        description: req.body.description,
+                        diagnosis: req.body.diagnosis,
+                        picID: req.body.picID,
+                        completedBy: req.body.completedBy,
+                        time: req.body.time,
+                        major: isMajor
+                    });
+                    newItem.save(function (err) {
+                        if(err) {
+                            sendJSONresponse(res, 404, err);
+                        } else {
+                            sendJSONresponse(res, 200, {success: true});
+                        }
+                    });
+                }
+            })
+          }
+        },
+
+    getAllScript: function (req, res) {
+        ScriptReport.find({'meetID': req.body.meetID}).exec(function (err, scripts) {
+            if (err) {
+                senderror(err);
+            } else {
+                sendJSONresponse(res, 200, scripts);
+            }
+        })
+    },
+
+    deleteScript: function (req, res) {
+        ScriptReport.findOneAndRemove({'meetID': req.body.meetID}).exec(function (err) {
+            if (err) {
+                senderror(err);
+            } else {
+                sendJSONresponse(res, 200, {delete_success: true});
+            }
+        })
+    },
+
+    updateScript: function (req, res) {
+        ScriptReport.findOneAndUpdate({'$and':[{'meetID': req.body.meetID},{'completedBy': req.body.completedBy}]}, {
+            'description': req.body.description,
+            'diagnosis': req.body.diagnosis,
+            'picID': req.body.picID
+        }, function (err) {
+            if (err) throw err;
+            else
+            sendJSONresponse(res, 200, {update_success: true});
+        })
     }
+
+
+
+
 };
 
 module.exports = functions;

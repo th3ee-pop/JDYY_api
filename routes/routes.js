@@ -73,4 +73,10 @@ router.post('/get_own_meet', MeetActions.getOwningItem);
 router.post('/get_co_meet', MeetActions.getCoItem);
 router.post('/delete_meet', MeetActions.deleteMeetItem);
 router.get('/get_all_meet', MeetActions.getAllMeetItem);
+
+router.post('/script_report', MeetActions.createScript);
+router.post('/get_script', MeetActions.getAllScript);
+router.post('/delete_script', MeetActions.deleteScript);
+router.post('/update_script', MeetActions.updateScript);
+
 module.exports = router;
