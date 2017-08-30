@@ -1,6 +1,7 @@
 var express = require('express');
 var actions = require('../methods/actions');
 var Newactions = require('../methods/NewActions');
+var MeetActions = require('../methods/MeetingAction');
 
 var router = express.Router();
 
@@ -67,4 +68,9 @@ router.post('/get_picked_items', Newactions.GetOwnItems);
 router.post('/save_pic', Newactions.SavePic);
 router.post('/get_pic', Newactions.GetPic);
 
+router.post('/meet_add', MeetActions.addMeetItem);
+router.post('/get_own_meet', MeetActions.getOwningItem);
+router.post('/get_co_meet', MeetActions.getCoItem);
+router.post('/delete_meet', MeetActions.deleteMeetItem);
+router.get('/get_all_meet', MeetActions.getAllMeetItem);
 module.exports = router;
