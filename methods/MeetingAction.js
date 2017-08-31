@@ -38,12 +38,12 @@ var senderror = function (err) {
 var functions = {
 
     addMeetItem: function (req, res) {
+        var meetingDate = req.body.date.replace(/-/g, '');
+        var meetingID = meetingDate + Math.random().toString(6).substr(2).slice(2,6);
         if(!req.body.examID){
             console.log(req.body);
             res.json({success: false, msg: 'There must be an examID'});
         } else {
-            var meetingDate = req.body.date.replace(/-/g, '');
-            var meetingID = meetingDate + Math.random().toString(6).substr(2).slice(2,6);
             console.log(meetingID);
             var newItem = Meet({
                 examID: req.body.examID,
@@ -61,6 +61,32 @@ var functions = {
                 } else {
                     sendJSONresponse(res, 200, {success: true});
                 }
+            });
+            var participant = [];
+            participant.push(req.body.owner);
+            req.body.cooperator.forEach(function (d) {
+                participant.push(d);
+            });
+            participant.forEach(function (p) {
+                var isMajor = p === req.body.owner;
+                var newItem = ScriptReport({
+                    examID: req.body.examID,
+                    meetID: meetingID,
+                    description: '暂无',
+                    diagnosis: '暂无',
+                    picID: '暂无',
+                    completedBy: p,
+                    time: req.body.date,
+                    major: isMajor
+                });
+                newItem.save(function (err) {
+                    if(err) {
+                        senderror(err);
+                    } else {
+                      //  sendJSONresponse(res, 200, {success: true});
+                        console.log('save success');
+                    }
+                });
             })
         }
     },
@@ -95,6 +121,16 @@ var functions = {
         })
     },
 
+    getMeetByID: function (req, res) {
+        Meet.findOne({'meetID': req.body.meetID}).exec(function (err, meeting) {
+            if (err) {
+                senderror(err);
+            } else {
+                sendJSONresponse(res, 200, meeting);
+            }
+        })
+    },
+
     deleteMeetItem: function (req, res) {
         Meet.findOneAndRemove({'examID': req.body.examID}).exec(function (err) {
             if (err) {
@@ -106,7 +142,7 @@ var functions = {
     },
 
     //The api below are all about the script report
-    createScript: function (req, res) {
+   /* createScript: function (req, res) {
         if(!req.body.examID || !req.body.meetID){
             console.log(req.body);
             res.json({success: false, msg: 'There must be an examID or meetID'});
@@ -138,7 +174,7 @@ var functions = {
                 }
             })
           }
-        },
+        },*/
 
     getAllScript: function (req, res) {
         ScriptReport.find({'meetID': req.body.meetID}).exec(function (err, scripts) {
