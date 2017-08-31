@@ -37,6 +37,13 @@ var senderror = function (err) {
 
 var functions = {
 
+    ItemCanMeet: function (req, res) {
+        Item.find({'$and':[{'owner': req.body.doctor}, {'$or':[{'status': '待书写'},{'status': '诊断中'}]}]}).exec(function (err, items) {
+            if (err) senderror(err);
+            else sendJSONresponse(res, 200, items);
+        })
+    },
+
     addMeetItem: function (req, res) {
         var meetingDate = req.body.date.replace(/-/g, '');
         var meetingID = meetingDate + Math.random().toString(6).substr(2).slice(2,6);
@@ -226,20 +233,31 @@ var functions = {
                report.date = item.time;
                report.verifyDoc = '暂无';
                console.log('item found');
+
+               ScriptReport.findOne({'$and':[{'meetID': req.body.meetID},{'major': true}]}).exec(function (err, script) {
+                   if (err) {
+                       senderror(err)
+                   } else {
+                       report.status = '待审核';
+                       report.description = script.description;
+                       report.diagnosis = script.diagnosis;
+                       report.reportDoc = script.owner;
+                       report.reporttime = script.time;
+                       console.log('meet found');
+                   }
+               });
+               report.save(function (err) {
+                   if (err) {
+                       senderror(err)
+                   } else {
+                       console.log('report save success');
+                   }
+               });
            }
        });
-       ScriptReport.findOne({'$and':[{'meetID': req.body.meetID},{'major': true}]}).exec(function (err, script) {
-           if (err) {
-               senderror(err)
-           } else {
-               report.status = '待审核';
-               report.description = script.description;
-               report.diagnosis = script.diagnosis;
-               report.reportDoc = script.owner;
-               report.reporttime = script.time;
-               console.log('meet found');
-           }
-       });
+
+       console.log(report);
+
        ScriptReport.findOneAndUpdate({'meetID': req.body.meetID}, {'status': '已关闭'}, function (err) {
            if (err) {
                senderror(err);

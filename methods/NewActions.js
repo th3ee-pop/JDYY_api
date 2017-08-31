@@ -132,6 +132,19 @@ var functions = {
         })
     },
 
+    GetOwner: function (req, res) {
+        Item.findOne({'examID': req.body.examID}).exec(function (err, item) {
+            if (err) {
+                senderror(err);
+            } else {
+                if (item)
+                sendJSONresponse(res, 200, item.owner);
+                else
+                    sendJSONresponse(res, 200, {status: 'this item get picked by nobody!'});
+            }
+        })
+    },
+
     GetOwnItems: function (req, res) {
         Item.find({'$and': [
             {'owner': req.body.doctor},

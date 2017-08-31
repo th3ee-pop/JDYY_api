@@ -64,6 +64,8 @@ router.post('/reject_item', Newactions.rejectApplication);
 router.post('/accept_rejection', Newactions.AcceptRejection);
 router.post('/pick_item', Newactions.PickItem);
 router.post('/get_picked_items', Newactions.GetOwnItems);
+router.post('/get_owner', Newactions.GetOwner);
+router.post('/get_meeting_items', MeetActions.ItemCanMeet);
 
 router.post('/save_pic', Newactions.SavePic);
 router.post('/get_pic', Newactions.GetPic);
