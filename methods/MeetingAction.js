@@ -216,66 +216,47 @@ var functions = {
         })
     },
 
-    submitScript: function (req, res) {
-        var report = new Report;
-       Item.findOne({'examID': req.body.examID}).exec(function (err, item) {
-           if (err) {
-               console.log(item);
-               senderror(err)
-           } else {
-               console.log(item);
-               report.patientID = item.patientID;
-               report.examID = item.examID;
-               report.name = item.name;
-               report.age = item.age;
-               report.gender = item.gender;
-               report.examContent = item.examContent;
-               report.examPart = item.examPart;
-               report.date = item.time;
-               report.verifyDoc = '暂无';
-               console.log('item found');
+    SaveScreenShot: function (req, res) {
+        Item.findOneAndUpdate({'examID': req.body.examID}, {'screenShot': req.body.screenShot}, function (err, item) {
+            if (err) {
+                senderror(err);
+            } else sendJSONresponse(res, 200, {Screenshots_saved: true});
+        })
+    },
 
-               ScriptReport.findOne({'$and':[{'meetID': req.body.meetID},{'major': true}]}).exec(function (err, script) {
-                   if (err) {
-                       senderror(err)
-                   } else {
-                       console.log(script);
-                       report.status = '待审核';
-                       report.description = script.description;
-                       report.diagnosis = script.diagnosis;
-                       report.reportDoc = script.owner;
-                       report.reporttime = script.time;
-                       console.log('meet found');
-                       console.log(report);
-                       report.save(function (err) {
-                           if (err) {
-                               senderror(err)
-                           } else {
-                               console.log('report save success');
-                               var newRecord = ReportRecord({
-                                   'examID': req.body.examID,
-                                   'operate_type': '生成报告',
-                                   'name': report.reportDoc,
-                                   'date': getTime()
-                               });
-                               newRecord.save(function (err) {
-                                   if(err) {
-                                       senderror(err);
-                                   } else {
-                                       console.log('update item');
-                                   }
-                               });
-                           }
-                       });
-                   }
-               });
-           }
+    submitScript: function (req, res) {
+       ScriptReport.findOne({'$and': [{'meetID': req.body.meetID},{'major': true}]}).exec(function (err, script) {
+           console.log(script);
+           var reportUpdate = {
+               'diagnosis': script.diagnosis,
+               'description': script.description,
+               'reportDoc': script.completedBy,
+               'verifyDoc': '暂无',
+               'status': '诊断中',
+               'reporttime': getTime()
+           };
+           var record = ReportRecord({
+               'examID': req.body.examID,
+               'operate_type': '生成报告',
+               'name': script.completedBy,
+               'date': getTime()
+           });
+
+           Report.findOneAndUpdate({'examID': req.body.examID}, reportUpdate, function (err) {
+               if (err) senderror(err);
+               console.log('update_report')
+           });
+           record.save(function (err) {
+               if (err) senderror(err);
+               console.log('record_generated');
+           })
        });
 
-       ScriptReport.findOneAndUpdate({'meetID': req.body.meetID}, {'status': '已关闭'}, function (err) {
+       Meet.findOneAndUpdate({'meetID': req.body.meetID}, {'status': '已关闭'}, function (err, meet) {
            if (err) {
                senderror(err);
            } else {
+               console.log(meet);
                console.log('update meet success');
            }
        });
@@ -284,9 +265,10 @@ var functions = {
            if (err)
                senderror(err);
            else {
-               sendJSONresponse(res,200,{update_item: true});
+               console.log('update item');
            }
        });
+        sendJSONresponse(res, 200, {reportUpdated: true});
     }
 
 

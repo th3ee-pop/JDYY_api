@@ -66,6 +66,8 @@ router.post('/pick_item', Newactions.PickItem);
 router.post('/get_picked_items', Newactions.GetOwnItems);
 router.post('/get_owner', Newactions.GetOwner);
 router.post('/get_meeting_items', MeetActions.ItemCanMeet);
+router.post('/save_screenshots', MeetActions.SaveScreenShot);
+
 
 router.post('/save_pic', Newactions.SavePic);
 router.post('/get_pic', Newactions.GetPic);
@@ -82,4 +84,10 @@ router.post('/get_script', MeetActions.getAllScript);
 router.post('/delete_script', MeetActions.deleteScript);
 router.post('/update_script', MeetActions.updateScript);
 router.post('/finish_meeting', MeetActions.submitScript);
+
+router.get('/remove_all', Newactions.Remove);
+router.get('/refresh_all', Newactions.Refresh);
+router.get('/get_all_items', Newactions.GetAllItems);
+router.get('/get_all_report', Newactions.GetAllReports);
+
 module.exports = router;
