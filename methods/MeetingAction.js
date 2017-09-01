@@ -208,10 +208,11 @@ var functions = {
             'description': req.body.description,
             'diagnosis': req.body.diagnosis,
             'picID': req.body.picID
-        }, function (err) {
+        }, function (err, script) {
             if (err) throw err;
-            else
+            else if(script)
             sendJSONresponse(res, 200, {update_success: true});
+            else sendJSONresponse(res, 200, {update_failed: 'No matched script found'});
         })
     },
 
@@ -238,25 +239,38 @@ var functions = {
                    if (err) {
                        senderror(err)
                    } else {
+                       console.log(script);
                        report.status = '待审核';
                        report.description = script.description;
                        report.diagnosis = script.diagnosis;
                        report.reportDoc = script.owner;
                        report.reporttime = script.time;
                        console.log('meet found');
-                   }
-               });
-               report.save(function (err) {
-                   if (err) {
-                       senderror(err)
-                   } else {
-                       console.log('report save success');
+                       console.log(report);
+                       report.save(function (err) {
+                           if (err) {
+                               senderror(err)
+                           } else {
+                               console.log('report save success');
+                               var newRecord = ReportRecord({
+                                   'examID': req.body.examID,
+                                   'operate_type': '生成报告',
+                                   'name': report.reportDoc,
+                                   'date': getTime()
+                               });
+                               newRecord.save(function (err) {
+                                   if(err) {
+                                       senderror(err);
+                                   } else {
+                                       console.log('update item');
+                                   }
+                               });
+                           }
+                       });
                    }
                });
            }
        });
-
-       console.log(report);
 
        ScriptReport.findOneAndUpdate({'meetID': req.body.meetID}, {'status': '已关闭'}, function (err) {
            if (err) {
@@ -265,20 +279,8 @@ var functions = {
                console.log('update meet success');
            }
        });
-       var newRecord = ReportRecord({
-           'examID': report.examID,
-           'operate_type': '生成报告',
-           'name': report.reportDoc,
-           'date': getTime()
-       });
-       newRecord.save(function (err) {
-           if(err) {
-               senderror(err);
-           } else {
-               console.log('update item');
-           }
-       });
-       Item.findOneAndUpdate({'examID': report.examID}, {'status': '诊断中' , 'applystatus': '诊断中'}, function (err) {
+
+       Item.findOneAndUpdate({'examID': req.body.examID}, {'status': '诊断中' , 'applystatus': '诊断中'}, function (err) {
            if (err)
                senderror(err);
            else {
