@@ -55,6 +55,7 @@ router.get('/get_status_count', actions.getCount);
 
 
 router.post('/get_local_items', Newactions.getLocalItem);
+router.post('/get_applied_items', Newactions.getApplyedItem);
 router.post('/get_sending_items', Newactions.getSendingItem);
 router.post('/get_applications', Newactions.getApplication);
 router.post('/send_application', Newactions.sendApplication);
@@ -63,6 +64,7 @@ router.post('/accept_item', Newactions.acceptApplication);
 router.post('/reject_item', Newactions.rejectApplication);
 router.post('/accept_rejection', Newactions.AcceptRejection);
 router.post('/pick_item', Newactions.PickItem);
+router.post('/distribute_item', Newactions.DistributeItem);
 router.post('/get_picked_items', Newactions.GetOwnItems);
 router.post('/get_owner', Newactions.GetOwner);
 router.post('/get_meeting_items', MeetActions.ItemCanMeet);
@@ -76,8 +78,8 @@ router.post('/meet_add', MeetActions.addMeetItem);
 router.post('/get_own_meet', MeetActions.getOwningItem);
 router.post('/get_co_meet', MeetActions.getCoItem);
 router.post('/delete_meet', MeetActions.deleteMeetItem);
-router.get('/get_all_meet', MeetActions.getAllMeetItem);
 router.post('/get_meet', MeetActions.getMeetByID);
+router.get('/get_all_meet', MeetActions.getAllMeetItem);
 
 // router.post('/script_report', MeetActions.createScript);
 router.post('/get_script', MeetActions.getAllScript);

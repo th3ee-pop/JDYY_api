@@ -217,6 +217,7 @@ var functions = {
     },
 
     SaveScreenShot: function (req, res) {
+        console.log(req.body.screenShot);
         Item.findOneAndUpdate({'examID': req.body.examID}, {'screenShot': req.body.screenShot}, function (err, item) {
             if (err) {
                 senderror(err);

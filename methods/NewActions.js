@@ -37,6 +37,16 @@ var functions = {
             }
         })
     },
+    getApplyedItem: function (req, res) {
+        Item.find({'$and':[{'sendHospital': req.body.hospital},{'destination': '--'},{'applystatus':{'$nin' : ['待申请']}}]}).exec(function (err, items) {
+            if (err) {
+                senderror(err);
+            }
+            else {
+                sendJSONresponse(res, 200 ,items);
+            }
+        })
+    },
 
     getSendingItem: function (req, res) {
         Item.find({'$and':[{'sendHospital': req.body.hospital},{'destination': {'$nin': ['--']}}]}).exec(function (err, items) {
@@ -124,12 +134,26 @@ var functions = {
 
     PickItem: function (req, res) {
         Item.findOneAndUpdate({'examID': req.body.examID}, {
-            'owner': req.body.doctor
+            'owner': req.body.doctor,
+            'origin': 'picked'
         }, function (err) {
             if (err) {
                 senderror(err);
             } else {
                 sendJSONresponse(res, 200, { msg: 'You have picked the item'});
+            }
+        })
+    },
+
+    DistributeItem: function (req, res) {
+        Item.findOneAndUpdate({'examID': req.body.examID}, {
+            'owner': req.body.doctor,
+            'origin': 'distributed'
+        }, function (err) {
+            if (err) {
+                senderror(err);
+            } else {
+                sendJSONresponse(res, 200, { msg: 'You have distributed this item'});
             }
         })
     },
