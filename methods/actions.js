@@ -178,7 +178,6 @@ var functions = {
             applyDoc: '--',
             time: req.body.time,
             applytime: req.body.applytime,
-            user: req.body.user,
             examContent: req.body.examContent,
             examPart: req.body.examPart
         });

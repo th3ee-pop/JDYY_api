@@ -293,6 +293,13 @@ var functions = {
             if(err) senderror(err);
             else sendJSONresponse(res, 200, items);
         })
+    },
+
+    GetAllApplys: function (req,res) {
+        Hero.find().exec(function (err , items) {
+            if(err) senderror(err);
+            else sendJSONresponse(res, 200, items);
+        })
     }
 };
 

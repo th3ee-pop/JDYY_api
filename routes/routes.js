@@ -89,5 +89,6 @@ router.get('/remove_all', Newactions.Remove);
 router.get('/refresh_all', Newactions.Refresh);
 router.get('/get_all_items', Newactions.GetAllItems);
 router.get('/get_all_report', Newactions.GetAllReports);
+router.get('/get_all_apply', Newactions.GetAllApplys);
 
 module.exports = router;
