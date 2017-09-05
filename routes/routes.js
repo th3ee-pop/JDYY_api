@@ -53,7 +53,6 @@ router.post('/get_group_by_name', actions.getGroupByName);
 
 router.get('/get_status_count', actions.getCount);
 
-
 router.post('/get_local_items', Newactions.getLocalItem);
 router.post('/get_applied_items', Newactions.getApplyedItem);
 router.post('/get_sending_items', Newactions.getSendingItem);
