@@ -25,7 +25,9 @@ var itemSchema = new Schema({
         applystatus: {type: String},
         transferstatus: {type: String},
         rejection: {type: String},
-        owner: {type: String}
+        owner: {type: String},
+        origin: {type: String},
+        screenShot: {type: Array}
     }
 );
 
