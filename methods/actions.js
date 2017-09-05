@@ -607,8 +607,13 @@ var functions = {
 
     updateReport: function (req,res) {
         console.log(req.body.id);
-        Report.findOneAndUpdate({'examID':req.body.examID}, {'description': req.body.description,
-            'diagnosis': req.body.diagnosis, 'status': req.body.status, 'initial': false}, function (err,doc) {
+        Report.findOneAndUpdate({'examID':req.body.examID}, {
+            'description': req.body.description,
+            'diagnosis': req.body.diagnosis,
+            'status': req.body.status,
+            'initial': false,
+            'reportDoc': req.body.reportDoc
+        }, function (err,doc) {
             if (err) throw err;
             sendJSONresponse(res,200,{success:true})
         })
