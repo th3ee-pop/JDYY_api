@@ -70,7 +70,6 @@ router.post('/get_owner', Newactions.GetOwner);
 router.post('/get_meeting_items', MeetActions.ItemCanMeet);
 router.post('/save_screenshots', MeetActions.SaveScreenShot);
 
-
 router.post('/save_pic', Newactions.SavePic);
 router.post('/get_pic', Newactions.GetPic);
 
