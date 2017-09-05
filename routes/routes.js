@@ -53,7 +53,6 @@ router.post('/get_group_by_name', actions.getGroupByName);
 
 router.get('/get_status_count', actions.getCount);
 
-
 router.post('/get_local_items', Newactions.getLocalItem);
 router.post('/get_applied_items', Newactions.getApplyedItem);
 router.post('/get_sending_items', Newactions.getSendingItem);
@@ -69,7 +68,6 @@ router.post('/get_picked_items', Newactions.GetOwnItems);
 router.post('/get_owner', Newactions.GetOwner);
 router.post('/get_meeting_items', MeetActions.ItemCanMeet);
 router.post('/save_screenshots', MeetActions.SaveScreenShot);
-
 
 router.post('/save_pic', Newactions.SavePic);
 router.post('/get_pic', Newactions.GetPic);
@@ -93,5 +91,11 @@ router.get('/refresh_all', Newactions.Refresh);
 router.get('/get_all_items', Newactions.GetAllItems);
 router.get('/get_all_report', Newactions.GetAllReports);
 router.get('/get_all_apply', Newactions.GetAllApplys);
+
+router.post('/sendMessage', actions.sendMessage);
+router.post('/getAllMessage', actions.getAllMessage);
+router.post('/getMessage', actions.getNewMessage);
+router.post('/updateMessage', actions.updateMessage);
+router.post('/deleteMessage', actions.deleteMessage);
 
 module.exports = router;

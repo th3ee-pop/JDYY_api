@@ -17,6 +17,7 @@
     "mongoose": "^4.10.0",
     "morgan": "^1.8.1",
     "nodemailer": "^4.0.1",
-    "passport": "^0.3.2"
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1"
   }
 }
