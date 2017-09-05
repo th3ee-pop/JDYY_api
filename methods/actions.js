@@ -13,6 +13,7 @@ var ejs = require('ejs');
 
 
 var sendJSONresponse = function (res, status, content) {
+    console.log(content);
     res.status(status);
     res.json(content);
 };
@@ -303,12 +304,65 @@ var functions = {
     },
 
     getGroup: function(req,res){
-            Group.find().exec(function(err, groups){
+        var actions =[];
+        var reportAct =[];
+        var Allpromise = [];
+
+        req.body.charactor.forEach(function (d) {
+            var promise = Group.findOne({'name': d}).exec(function (err, group) {
                 if (err) {
                     throw err;
+                } else {
+
                 }
-                sendJSONresponse(res,200,groups);
-            })
+                actions = actions.concat(group.reportAct);
+
+                /* */
+            });
+            Allpromise.push(promise);
+        });
+
+        Promise.all(Allpromise).then(function () {
+            for (var i =0;i < actions.length;i++){
+                var repeat = false;
+                reportAct.forEach(function (d) {
+                        if (d === actions[i]){
+                            repeat = true;
+                        }
+                    }
+                );
+                if (!repeat) {
+                    reportAct.push(actions[i]);
+                }
+            }
+            console.log(reportAct);
+            sendJSONresponse(res, 200, reportAct);
+        });
+
+        /*req.body.charactor.forEach(function (d) { Group.findOne({'name': d}).exec(function(err, group){
+            if (err) {
+                throw err;
+            } else {}
+            actions = actions.concat(group.reportAct);
+
+            for (var i =0;i < actions.length;i++){
+                var repeat = false;
+                reportAct.forEach(function (d) {
+                    if (d === actions[i]){
+                        repeat = true;
+                    }
+                }
+                );
+                if (!repeat) {
+                    reportAct.push(actions[i]);
+                }
+            }
+            console.log(reportAct);
+        });
+        });*/
+        console.log(Allpromise);
+        console.log(reportAct);
+       //
         }
     ,
 

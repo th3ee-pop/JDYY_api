@@ -235,7 +235,8 @@ var functions = {
                'reportDoc': script.completedBy,
                'verifyDoc': '暂无',
                'status': '诊断中',
-               'reporttime': getTime()
+               'reporttime': getTime(),
+               'initial': false
            };
            var record = ReportRecord({
                'examID': req.body.examID,

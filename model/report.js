@@ -22,6 +22,7 @@ var reportSchema = new Schema({
         status: {type: String},
         reportDoc: {type: String},
         verifyDoc: {type: String},
+        initial: {type: Boolean},
     }
 );
 

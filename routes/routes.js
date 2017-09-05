@@ -48,7 +48,7 @@ router.post('/delete_record_ID', actions.deleteRecordById);
 router.post('/add_group', actions.addGroup);
 router.post('/update_group', actions.updateGroup);
 router.post('/delete_group', actions.deleteGroup);
-router.get('/get_group', actions.getGroup);
+router.post('/get_group', actions.getGroup);
 router.post('/get_group_by_name', actions.getGroupByName);
 
 router.get('/get_status_count', actions.getCount);

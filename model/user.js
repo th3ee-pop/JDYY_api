@@ -26,8 +26,7 @@ var userSchema = new Schema({
         type: String
     },
     level: {
-        type: String,
-        required: true
+        type: Array,
     },
     phone: {
         type: String,

@@ -189,21 +189,27 @@ var functions = {
     },
 
     SavePic: function (req, res) {
-        if(!req.body.examID){
+        if(!req.body.examID || !req.body.picID){
             console.log(req.body);
             res.json({success: false, msg: 'You must have a examID'});
         }
         else{
+            ReportPic.findOne({'$and': [{'examID': req.body.examID},{'picID': req.body.picID}]}).exec(function (err, item) {
+                if (item) {
+                    sendJSONresponse(res, 204, {pic_already_existed: true});
+                } else {
+                    var newItem = ReportPic(req.body);
+                    newItem.save(function (err) {
+                        if(err){
+                            sendJSONresponse(res,404,err);
+                        }
+                        else{
+                            sendJSONresponse(res,200,{success: true});
+                        }
+                    })
+                }
+            });
             console.log(req.body);
-            var newItem = ReportPic(req.body);
-            newItem.save(function (err) {
-                if(err){
-                    sendJSONresponse(res,404,err);
-                }
-                else{
-                    sendJSONresponse(res,200,{success: true});
-                }
-            })
         }
     },
 
@@ -255,6 +261,10 @@ var functions = {
             if (err) senderror(err);
             console.log('script_removed');
         });
+        ReportPic.remove(true,function (err) {
+            if (err) senderror(err);
+            console.log('reportPic_removed');
+        });
     },
 
     Refresh: function (req, res) {
@@ -303,7 +313,8 @@ var functions = {
                 verifyDoc: '--',
                 status: '--',
                 description: '--',
-                diagnosis: '--'
+                diagnosis: '--',
+                initial: true
             });
                 item.save(function (err) {
                 if (err) senderror(err);
