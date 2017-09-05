@@ -218,6 +218,18 @@ var functions = {
         })
     },
 
+    ClearPic: function (req, res) {
+        ReportPic.remove({'examID': req.body.examID}).exec(
+            function (err) {
+                if (err) {
+                    senderror(err);
+                } else {
+                    sendJSONresponse(res, 200, {remove_success: true});
+                }
+            }
+        )
+    },
+
     Remove: function (req, res) {
         Item.remove(true,function (err) {
             if (err) senderror(err);

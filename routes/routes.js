@@ -73,6 +73,7 @@ router.post('/save_screenshots', MeetActions.SaveScreenShot);
 
 router.post('/save_pic', Newactions.SavePic);
 router.post('/get_pic', Newactions.GetPic);
+router.post('/clear_pic', Newactions.ClearPic);
 
 router.post('/meet_add', MeetActions.addMeetItem);
 router.post('/get_own_meet', MeetActions.getOwningItem);
