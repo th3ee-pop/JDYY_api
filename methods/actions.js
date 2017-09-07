@@ -116,6 +116,38 @@ var functions = {
             })
         }
     },
+
+    RefreshUser: function (req, res) {
+        var NewUsers = [
+            {'name': '王泽','password': '12345', 'gender': '男', 'age': '20', 'department': '医学影像科', 'status': '有效', 'level': [], 'phone': '18772765784','address': '--','usertype': 'specialist', 'hospital': '交大一附院', 'reportAct': []},
+            {'name': '王顺','password': '12345', 'gender': '男', 'age': '35', 'department': '医学影像科', 'status': '有效', 'level': [], 'phone': '18872777761','address': '--','usertype': 'specialist', 'hospital': '交大一附院', 'reportAct': []},
+            {'name': '孟宪','password': '12345', 'gender': '男', 'age': '45', 'department': '医学影像科', 'status': '有效', 'level': [], 'phone': '13992856291','address': '--','usertype': 'specialist', 'hospital': '交大一附院', 'reportAct': []},
+            {'name': '周武','password': '12345', 'gender': '男', 'age': '20', 'department': '医学影像科', 'status': '有效', 'level': [], 'phone': '14785633645','address': '--','usertype': 'specialist', 'hospital': '西京医院', 'reportAct': []},
+            {'name': '李涛','password': '12345', 'gender': '男', 'age': '35', 'department': '医学影像科', 'status': '有效', 'level': [], 'phone': '13678468376','address': '--','usertype': 'specialist', 'hospital': '西京医院', 'reportAct': []},
+            {'name': '张华','password': '12345', 'gender': '男', 'age': '45', 'department': '医学影像科', 'status': '有效', 'level': [], 'phone': '18897965476','address': '--','usertype': 'specialist', 'hospital': '西京医院', 'reportAct': []}
+        ];
+        NewUsers.forEach(function (d) {
+            var user = User(d);
+            user.save(function (err) {
+                if(err){
+                    console.log('save failed');
+                } else {
+                    console.log('successfully saved');
+                }
+            })
+        })
+
+    },
+
+    RemoveAllDoctors: function (req, res) {
+        User.remove({'usertype': 'specialist'}).exec(function (err) {
+            if(err) res.json({success: false});
+            else res.json({success: true});
+                })
+    },
+
+
+
     getinfo: function(req, res){
         if(req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
             var token = req.headers.authorization.split(' ')[1];
@@ -270,23 +302,70 @@ var functions = {
     },
 
     updateUser: function(req,res){
+
+        var Allpromise = [];
+        var GroupPromise = [];
+
         if(!req.body.name){
             console.log(req.body);
             res.json({success: false, msg: 'You must enter a user name'});
         }
         else {
             console.log(req.body.name);
-            req.body.name.forEach(function (user) {
-                User.findOneAndUpdate({
-                    'name': user.name
-                },{
-                    'level': req.body.level,
-                    'reportAct': req.body.reportAct
-                },function (err) {
-                    if (err) return;
-                })
+            req.body.name.forEach(function (d) {
+                console.log(req.body.name);
+               var promise = User.findOne({'name':d.name}).exec(function (err, user) {
+                   console.log(user);
+                   var actions = [];
+                   var reportAct = [];
+                    var repeat = false;
+                    user.level.forEach(function (t) {
+                        if (t === req.body.level) {
+                            repeat = true;
+                        }
+                    });
+                    if (!repeat)
+                    {
+                        user.level.push(req.body.level);
+                    }
+                    console.log(user.level);
+                    user.level.forEach(function (d) {
+                        var promise =  Group.findOne({'name': d}).exec(function (err, group) {
+                            if(err) throw err;
+                            else console.log('found group');
+                            actions = actions.concat(group.reportAct);
+                            console.log('this is' + group.reportAct);
+                        });
+                        GroupPromise.push(promise);
+                    });
+                    Promise.all(GroupPromise).then(function () {
+                        console.log(actions);
+                        console.log('this is useract'+ user.level);
+                        for (var i =0;i < actions.length;i++){
+                            var repeat = false;
+                            reportAct.forEach(function (d) {
+                                    if (d === actions[i]){
+                                        repeat = true;
+                                    }
+                                }
+                            );
+                            if (!repeat) {
+                                reportAct.push(actions[i]);
+                            }
+                        }
+                        var UserUpdate = {'level': user.level, 'reportAct': reportAct};
+                        User.findOneAndUpdate({'name': d.name}, UserUpdate, function (err) {
+                            if (err) throw err;
+                            else console.log('updated');
+                        });
+                    });
+                });
+                Allpromise.push(promise)
             });
         }
+        Promise.all(Allpromise).then(function () {
+            sendJSONresponse(res, 200, {update: 'success'});
+        })
     },
 
     deleteGroup: function(req,res){
@@ -304,68 +383,24 @@ var functions = {
 
     },
 
+
     getGroup: function(req,res){
-        var actions =[];
-        var reportAct =[];
-        var Allpromise = [];
-
-        req.body.charactor.forEach(function (d) {
-            var promise = Group.findOne({'name': d}).exec(function (err, group) {
-                if (err) {
-                    throw err;
-                } else {
-
-                }
-                actions = actions.concat(group.reportAct);
-
-                /* */
-            });
-            Allpromise.push(promise);
-        });
-
-        Promise.all(Allpromise).then(function () {
-            for (var i =0;i < actions.length;i++){
-                var repeat = false;
-                reportAct.forEach(function (d) {
-                        if (d === actions[i]){
-                            repeat = true;
-                        }
-                    }
-                );
-                if (!repeat) {
-                    reportAct.push(actions[i]);
-                }
-            }
-            console.log(reportAct);
-            sendJSONresponse(res, 200, reportAct);
-        });
-
-        /*req.body.charactor.forEach(function (d) { Group.findOne({'name': d}).exec(function(err, group){
+        Group.find().exec(function(err, groups){
             if (err) {
                 throw err;
-            } else {}
-            actions = actions.concat(group.reportAct);
-
-            for (var i =0;i < actions.length;i++){
-                var repeat = false;
-                reportAct.forEach(function (d) {
-                    if (d === actions[i]){
-                        repeat = true;
-                    }
-                }
-                );
-                if (!repeat) {
-                    reportAct.push(actions[i]);
-                }
             }
-            console.log(reportAct);
-        });
-        });*/
-        console.log(Allpromise);
-        console.log(reportAct);
-       //
-        }
-    ,
+            sendJSONresponse(res,200,groups);
+        })
+    },
+
+    removeGroup: function(req,res){
+        Group.remove().exec(function(err){
+            if (err) {
+                throw err;
+            }
+            sendJSONresponse(res,200,{remove_success: true});
+        })
+    },
 
     getGroupByName: function(req,res){
         Group.find({'name': req.body.name}).exec(function(err, group){

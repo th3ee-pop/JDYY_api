@@ -31,6 +31,9 @@ router.post('/updatehero', actions.updateHero);
 router.post('/deletehero', actions.deleteHero);
 router.post('/sendmail', actions.sendMail);
 
+router.get('/remove_user', actions.RemoveAllDoctors);
+router.get('/refresh_user', actions.RefreshUser);
+
 router.get('/getdoctors', actions.getDoctors);
 
 router.post('/addreport', actions.addReport);
@@ -48,8 +51,9 @@ router.post('/delete_record_ID', actions.deleteRecordById);
 router.post('/add_group', actions.addGroup);
 router.post('/update_group', actions.updateGroup);
 router.post('/delete_group', actions.deleteGroup);
-router.post('/get_group', actions.getGroup);
+router.get('/get_group', actions.getGroup);
 router.post('/get_group_by_name', actions.getGroupByName);
+router.get('/remove_group', actions.removeGroup);
 
 router.get('/get_status_count', actions.getCount);
 
