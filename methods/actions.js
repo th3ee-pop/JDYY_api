@@ -135,7 +135,8 @@ var functions = {
                     console.log('successfully saved');
                 }
             })
-        })
+        });
+        sendJSONresponse(res, 200, {update_success: true})
 
     },
 
