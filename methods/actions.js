@@ -815,7 +815,7 @@ var functions = {
 
     deleteMessage: function (req,res) {
         console.log('remove'+req.body);
-        Message.remove(req.body._id).exec(function (err, items){
+        Message.findOneAndRemove({'_id':req.body._id},function (err, items){
             if(err){
                 console.log(err);
                 return;
