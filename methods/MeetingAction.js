@@ -38,7 +38,7 @@ var senderror = function (err) {
 var functions = {
 
     ItemCanMeet: function (req, res) {
-        Item.find({'$and':[{'owner': req.body.doctor}, {'$or':[{'status': '待书写'},{'status': '诊断中'}]}]}).exec(function (err, items) {
+        Item.find({'$and':[{'responsible': req.body.doctor}, {'$or':[{'status': '待书写'},{'status': '诊断中'}]}]}).exec(function (err, items) {
             if (err) senderror(err);
             else sendJSONresponse(res, 200, items);
         })

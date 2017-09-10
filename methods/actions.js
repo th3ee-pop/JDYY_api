@@ -287,17 +287,48 @@ var functions = {
     },
 
     updateGroup: function(req,res){
+        var removed_members = [];
         if(!req.body.name){
             console.log(req.body);
             res.json({success: false, msg: 'You must enter a patient name'});
         }
         else {
             console.log(req.body);
-            Group.findOneAndUpdate({'name': req.body.name}, {'members': req.body.members,
+/*            Group.findOneAndUpdate({'name': req.body.name}, {'members': req.body.members,
                 'reportAct': req.body.reportAct},
             function(err){
                 if (err) throw err;
                 sendJSONresponse(res,200,{success: true});
+            })*/
+             var promise = Group.findOne({'name': req.body.name}).exec(function (err ,group) {
+                 if (err || !group) res.json({success: false, msg: 'sth wrong or not found group'}); 
+                 else {
+                     group.members.forEach(function (d) { 
+                         var HasMember = false;
+                         req.body.members.forEach(function (t) { 
+                             if (t.name === d.name) {
+                                 HasMember = true;
+                             }
+                         });
+                         if (!HasMember) {
+                            removed_members.push(d); 
+                         }
+                     });
+                     console.log(removed_members);
+                 }
+             });
+            
+            Promise(promise).then(function () {
+                
+                var userPromise = Group.findOneAndUpdate({'name': req.body.name}, {'members': req.body.members,
+                        'reportAct': req.body.reportAct},
+                    function(err){
+                        if (err) throw err;
+                        console.log('group updated');
+                    });
+                Promise(userPromise).then(function () {
+                    
+                })
             })
         }
     },

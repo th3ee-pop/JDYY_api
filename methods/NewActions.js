@@ -28,14 +28,25 @@ var senderror = function (err) {
 
 var functions = {
     getLocalItem: function (req, res) {
-        Item.find({'$and':[{'sendHospital': req.body.hospital},{'destination': '--'}]}).exec(function (err, items) {
-            if (err) {
-                senderror(err);
-            }
-            else {
-                sendJSONresponse(res, 200 ,items);
-            }
-        })
+        if (req.body.level.indexOf('一线医师') > -1) {
+            Item.find({'$and': [{'sendHospital': req.body.hospital}, {'destination': '--'}]}).exec(function (err, items) {
+                if (err) {
+                    senderror(err);
+                }
+                else {
+                    sendJSONresponse(res, 200, items);
+                }
+            })
+        } else {
+            Item.find({'$and': [{'sendHospital': req.body.hospital}, {'destination': '--'}, {'$or':[{'status': '待审核'},{'status': '审核中'},{'status': '已审核'}]}]}).exec(function (err, items) {
+                if (err) {
+                    senderror(err);
+                }
+                else {
+                    sendJSONresponse(res, 200, items);
+                }
+            })
+        }
     },
     getApplyedItem: function (req, res) {
         Item.find({'$and':[{'sendHospital': req.body.hospital},{'destination': '--'},{'applystatus':{'$nin' : ['待申请']}}]}).exec(function (err, items) {
@@ -86,6 +97,7 @@ var functions = {
     },
 
     getOtherItem: function (req, res) {
+        if (req.body.level.indexOf('一线医师')>-1) {
         Item.find({'$and':[{'destination': req.body.hospital},{'transferstatus': '已接收'}]}).exec(function (err, items) {
             if (err) {
                 senderror(err);
@@ -94,10 +106,20 @@ var functions = {
                 sendJSONresponse(res, 200 ,items);
             }
         })
+        } else {
+            Item.find({'$and':[{'destination': req.body.hospital},{'transferstatus': '已接收'}, {'$or':[{'status': '待审核'},{'status': '审核中'},{'status': '已审核'}]}]}).exec(function (err, items) {
+                if (err) {
+                    senderror(err);
+                }
+                else {
+                    sendJSONresponse(res, 200 ,items);
+                }
+            })
+        }
     },
 
     acceptApplication: function (req, res) {
-        Item.findOneAndUpdate({'examID': req.body.examID}, {'transferstatus': '已接收'}, function (err) {
+        Item.findOneAndUpdate({'examID': req.body.examID}, {'transferstatus': '已接收', 'responsible': '--'}, function (err) {
             if (err) {
                 senderror(err);
             } else {
@@ -122,7 +144,7 @@ var functions = {
             'rejection': '--',
             'destination': '--',
             'applyDoc': '--',
-            'transReason': '--'
+            'transReason': '--',
         }, function (err) {
             if (err) {
                 senderror(err);
@@ -133,27 +155,65 @@ var functions = {
     },
 
     PickItem: function (req, res) {
-        Item.findOneAndUpdate({'examID': req.body.examID}, {
-            'owner': req.body.doctor,
-            'origin': 'picked'
-        }, function (err) {
-            if (err) {
-                senderror(err);
-            } else {
-                sendJSONresponse(res, 200, { msg: 'You have picked the item'});
+        Item.findOne({'examID': req.body.examID}).exec(function (err, item) {
+            if (err) senderror(err);
+            else {
+                if (item.owner !== '--') {
+                    Item.findOneAndUpdate({'examID': req.body.examID}, {
+                        'responsible': req.body.doctor,
+                        'origin': 'picked'
+                    }, function (err) {
+                        if (err) {
+                            senderror(err);
+                        } else {
+                            sendJSONresponse(res, 200, { msg: 'You have picked the item'});
+                        }
+                    })
+                } else {
+                    Item.findOneAndUpdate({'examID': req.body.examID}, {
+                        'owner': req.body.doctor,
+                        'responsible': req.body.doctor,
+                        'origin': 'picked'
+                    }, function (err) {
+                        if (err) {
+                            senderror(err);
+                        } else {
+                            sendJSONresponse(res, 200, { msg: 'You have picked the item'});
+                        }
+                    })
+                }
             }
         })
     },
 
     DistributeItem: function (req, res) {
-        Item.findOneAndUpdate({'examID': req.body.examID}, {
-            'owner': req.body.doctor,
-            'origin': 'distributed'
-        }, function (err) {
-            if (err) {
-                senderror(err);
-            } else {
-                sendJSONresponse(res, 200, { msg: 'You have distributed this item'});
+        Item.findOne({'examID': req.body.examID}).exec(function (err, item) {
+            if (err) senderror(err);
+            else {
+                if (item.owner !== '--') {
+                    Item.findOneAndUpdate({'examID': req.body.examID}, {
+                        'responsible': req.body.doctor,
+                        'origin': 'distributed'
+                    }, function (err) {
+                        if (err) {
+                            senderror(err);
+                        } else {
+                            sendJSONresponse(res, 200, { msg: 'You have distributed the item'});
+                        }
+                    })
+                } else {
+                    Item.findOneAndUpdate({'examID': req.body.examID}, {
+                        'owner': req.body.doctor,
+                        'responsible': req.body.doctor,
+                        'origin': 'distributed'
+                    }, function (err) {
+                        if (err) {
+                            senderror(err);
+                        } else {
+                            sendJSONresponse(res, 200, { msg: 'You have distributed the item'});
+                        }
+                    })
+                }
             }
         })
     },
@@ -173,7 +233,7 @@ var functions = {
 
     GetOwnItems: function (req, res) {
         Item.find({'$and': [
-            {'owner': req.body.doctor},
+            {'responsible': req.body.doctor},
             {'$or': [
             {'$and':[{'sendHospital': req.body.hospital},{'destination': '--'}]},
             {'$and':[{'destination': req.body.hospital},{'transferstatus': '已接收'}]}
@@ -296,6 +356,7 @@ var functions = {
                 applyDoc: '--',
                 transReason: '--',
                 owner: '--',
+                responsible: '--',
                 origin: '--',
                 screenShot: ['']
             });
