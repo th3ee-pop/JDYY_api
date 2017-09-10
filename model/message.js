@@ -22,7 +22,6 @@ Sequence.statics.increment = function (schemaName, callback) {
 models.Sequence = mongoose.model('Sequence', Sequence);
 
 var messageSchema = new Schema({
-   id:{type:Number,index:{ unique: true }},
     topic:{type:String},
     title: {type: String},
     text: {type: String},
