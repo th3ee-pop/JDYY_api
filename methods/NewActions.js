@@ -144,7 +144,7 @@ var functions = {
             'rejection': '--',
             'destination': '--',
             'applyDoc': '--',
-            'transReason': '--',
+            'transReason': '--'
         }, function (err) {
             if (err) {
                 senderror(err);
@@ -227,6 +227,19 @@ var functions = {
                 sendJSONresponse(res, 200, item.owner);
                 else
                     sendJSONresponse(res, 200, {status: 'this item get picked by nobody!'});
+            }
+        })
+    },
+
+    GetResponsible: function (req, res) {
+        Item.findOne({'examID': req.body.examID}).exec(function (err, item) {
+            if (err) {
+                senderror(err);
+            } else {
+                if (item)
+                    sendJSONresponse(res, 200, item.responsible);
+                else
+                    sendJSONresponse(res, 200, {status: 'this item is responsible to nobody!'});
             }
         })
     },

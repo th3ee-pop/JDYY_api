@@ -70,6 +70,7 @@ router.post('/pick_item', Newactions.PickItem);
 router.post('/distribute_item', Newactions.DistributeItem);
 router.post('/get_picked_items', Newactions.GetOwnItems);
 router.post('/get_owner', Newactions.GetOwner);
+router.post('/get_responsible', Newactions.GetResponsible);
 router.post('/get_meeting_items', MeetActions.ItemCanMeet);
 router.post('/save_screenshots', MeetActions.SaveScreenShot);
 
