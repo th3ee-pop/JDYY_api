@@ -28,6 +28,16 @@ var senderror = function (err) {
 
 var functions = {
     getLocalItem: function (req, res) {
+            Item.find({'$and': [{'sendHospital': req.body.hospital}, {'destination': '--'}]}).exec(function (err, items) {
+                if (err) {
+                    senderror(err);
+                }
+                else {
+                    sendJSONresponse(res, 200, items);
+                }
+            })
+    },
+    getApplyedItem: function (req, res) {
         if (req.body.level.indexOf('一线医师') > -1) {
             Item.find({'$and': [{'sendHospital': req.body.hospital}, {'destination': '--'}]}).exec(function (err, items) {
                 if (err) {
@@ -47,16 +57,6 @@ var functions = {
                 }
             })
         }
-    },
-    getApplyedItem: function (req, res) {
-        Item.find({'$and':[{'sendHospital': req.body.hospital},{'destination': '--'},{'applystatus':{'$nin' : ['待申请']}}]}).exec(function (err, items) {
-            if (err) {
-                senderror(err);
-            }
-            else {
-                sendJSONresponse(res, 200 ,items);
-            }
-        })
     },
 
     getSendingItem: function (req, res) {
