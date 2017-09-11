@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="feb7c82a-27b8-4790-bd8a-552ef6d35c0b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/methods/NewActions.js" afterPath="$PROJECT_DIR$/methods/NewActions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/routes.js" afterPath="$PROJECT_DIR$/routes/routes.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/methods/actions.js" afterPath="$PROJECT_DIR$/methods/actions.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -24,8 +23,8 @@
             <file leaf-file-name="NewActions.js" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/methods/NewActions.js">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="1133">
-                    <caret line="241" column="96" lean-forward="true" selection-start-line="241" selection-start-column="96" selection-end-line="241" selection-end-column="96" />
+                  <state relative-caret-position="335">
+                    <caret line="269" column="45" lean-forward="true" selection-start-line="269" selection-start-column="45" selection-end-line="269" selection-end-column="45" />
                     <folding>
                       <element signature="e#0#39#0" expanded="false" />
                     </folding>
@@ -51,11 +50,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="actions.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="actions.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/methods/actions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2888">
-              <caret line="617" column="6" lean-forward="true" selection-start-line="617" selection-start-column="6" selection-end-line="617" selection-end-column="6" />
+            <state relative-caret-position="361">
+              <caret line="145" column="109" lean-forward="true" selection-start-line="145" selection-start-column="109" selection-end-line="145" selection-end-column="109" />
               <folding />
             </state>
           </provider>
@@ -87,7 +86,7 @@
         <entry file="file://$PROJECT_DIR$/methods/MeetingAction.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="367">
-              <caret line="42" column="51" lean-forward="true" selection-start-line="42" selection-start-column="51" selection-end-line="42" selection-end-column="51" />
+              <caret line="42" column="51" lean-forward="false" selection-start-line="42" selection-start-column="51" selection-end-line="42" selection-end-column="51" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -107,7 +106,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="routes.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="routes.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/routes.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="531">
@@ -173,11 +172,11 @@
         <option value="$PROJECT_DIR$/model/reportPic.js" />
         <option value="$PROJECT_DIR$/model/user.js" />
         <option value="$PROJECT_DIR$/model/report.js" />
-        <option value="$PROJECT_DIR$/methods/actions.js" />
         <option value="$PROJECT_DIR$/model/item.js" />
         <option value="$PROJECT_DIR$/methods/MeetingAction.js" />
-        <option value="$PROJECT_DIR$/methods/NewActions.js" />
         <option value="$PROJECT_DIR$/routes/routes.js" />
+        <option value="$PROJECT_DIR$/methods/actions.js" />
+        <option value="$PROJECT_DIR$/methods/NewActions.js" />
       </list>
     </option>
   </component>
@@ -375,16 +374,15 @@
       <workItem from="1503922909996" duration="8491000" />
       <workItem from="1504059541281" duration="36469000" />
       <workItem from="1504525779817" duration="3116000" />
-      <workItem from="1504529649189" duration="44074000" />
+      <workItem from="1504529649189" duration="49243000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="116885000" />
+    <option name="totallyTimeSpent" value="122054000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1505" y="-4" width="1855" height="1084" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24945454" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -820,7 +818,7 @@
     <entry file="file://$PROJECT_DIR$/methods/MeetingAction.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="367">
-          <caret line="42" column="51" lean-forward="true" selection-start-line="42" selection-start-column="51" selection-end-line="42" selection-end-column="51" />
+          <caret line="42" column="51" lean-forward="false" selection-start-line="42" selection-start-column="51" selection-end-line="42" selection-end-column="51" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
@@ -837,14 +835,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/methods/actions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2888">
-          <caret line="617" column="6" lean-forward="true" selection-start-line="617" selection-start-column="6" selection-end-line="617" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/routes/routes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="531">
@@ -853,10 +843,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/methods/actions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="145" column="109" lean-forward="true" selection-start-line="145" selection-start-column="109" selection-end-line="145" selection-end-column="109" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/methods/NewActions.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1133">
-          <caret line="241" column="96" lean-forward="true" selection-start-line="241" selection-start-column="96" selection-end-line="241" selection-end-column="96" />
+        <state relative-caret-position="335">
+          <caret line="269" column="45" lean-forward="true" selection-start-line="269" selection-start-column="45" selection-end-line="269" selection-end-column="45" />
           <folding>
             <element signature="e#0#39#0" expanded="false" />
           </folding>

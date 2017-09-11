@@ -124,7 +124,9 @@ var functions = {
             {'name': '孟宪','password': '12345', 'gender': '男', 'age': '45', 'department': '医学影像科', 'status': '有效', 'level': [], 'phone': '13992856291','address': '--','usertype': 'specialist', 'hospital': '交大一附院', 'reportAct': []},
             {'name': '周武','password': '12345', 'gender': '男', 'age': '20', 'department': '医学影像科', 'status': '有效', 'level': [], 'phone': '14785633645','address': '--','usertype': 'specialist', 'hospital': '西京医院', 'reportAct': []},
             {'name': '李涛','password': '12345', 'gender': '男', 'age': '35', 'department': '医学影像科', 'status': '有效', 'level': [], 'phone': '13678468376','address': '--','usertype': 'specialist', 'hospital': '西京医院', 'reportAct': []},
-            {'name': '张华','password': '12345', 'gender': '男', 'age': '45', 'department': '医学影像科', 'status': '有效', 'level': [], 'phone': '18897965476','address': '--','usertype': 'specialist', 'hospital': '西京医院', 'reportAct': []}
+            {'name': '张华','password': '12345', 'gender': '男', 'age': '45', 'department': '医学影像科', 'status': '有效', 'level': [], 'phone': '18897965476','address': '--','usertype': 'specialist', 'hospital': '西京医院', 'reportAct': []},
+            {'name': '交大一附院','password': '12345', 'gender': '--', 'age': '--', 'department': '--', 'status': '有效', 'level': ['医院'], 'phone': '029-84775507','address': '陕西·西安市雁塔西路277号','usertype': 'organization', 'hospital': '交大一附院', 'reportAct': []},
+            {'name': '西京医院','password': '12345', 'gender': '--', 'age': '--', 'department': '--', 'status': '有效', 'level': ['医院'], 'phone': '029-84775507','address': '陕西省西安市长乐西路15号','usertype': 'organization', 'hospital': '西京医院', 'reportAct': []}
         ];
         NewUsers.forEach(function (d) {
             var user = User(d);
@@ -141,7 +143,7 @@ var functions = {
     },
 
     RemoveAllDoctors: function (req, res) {
-        User.remove({'usertype': 'specialist'}).exec(function (err) {
+        User.remove({'$or':[{'usertype': 'specialist'}, {'usertype': 'organization'}]}).exec(function (err) {
             if(err) res.json({success: false});
             else res.json({success: true});
                 })

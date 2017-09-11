@@ -28,7 +28,7 @@ var senderror = function (err) {
 
 var functions = {
     getLocalItem: function (req, res) {
-            Item.find({'$and': [{'sendHospital': req.body.hospital}, {'destination': '--'}]}).exec(function (err, items) {
+            Item.find({'$and': [{'sendHospital': req.body.hospital}]}).exec(function (err, items) {
                 if (err) {
                     senderror(err);
                 }
@@ -38,8 +38,9 @@ var functions = {
             })
     },
     getApplyedItem: function (req, res) {
-        if (req.body.level.indexOf('一线医师') > -1) {
-            Item.find({'$and': [{'sendHospital': req.body.hospital}, {'destination': '--'}]}).exec(function (err, items) {
+        if (req.body.level){
+           if (req.body.level.indexOf('一线医师') > -1) {
+            Item.find({'$and': [{'sendHospital': req.body.hospital}, {'destination': '--'}, {'applystatus':{'$nin':['待申请']}}]}).exec(function (err, items) {
                 if (err) {
                     senderror(err);
                 }
@@ -47,8 +48,18 @@ var functions = {
                     sendJSONresponse(res, 200, items);
                 }
             })
-        } else {
+           } else {
             Item.find({'$and': [{'sendHospital': req.body.hospital}, {'destination': '--'}, {'$or':[{'status': '待审核'},{'status': '审核中'},{'status': '已审核'}]}]}).exec(function (err, items) {
+                if (err) {
+                    senderror(err);
+                }
+                else {
+                    sendJSONresponse(res, 200, items);
+                }
+            })
+        }
+        } else {
+            Item.find({'$and': [{'sendHospital': req.body.hospital}, {'destination': '--'}, {'applystatus':{'$nin':['待申请']}}]}).exec(function (err, items) {
                 if (err) {
                     senderror(err);
                 }
@@ -97,6 +108,7 @@ var functions = {
     },
 
     getOtherItem: function (req, res) {
+        if (req.body.level) {
         if (req.body.level.indexOf('一线医师')>-1) {
         Item.find({'$and':[{'destination': req.body.hospital},{'transferstatus': '已接收'}]}).exec(function (err, items) {
             if (err) {
@@ -113,6 +125,15 @@ var functions = {
                 }
                 else {
                     sendJSONresponse(res, 200 ,items);
+                }
+            })
+        }} else {
+            Item.find({'$and': [{'destination': req.body.hospital}, {'transferstatus': '已接收'}]}).exec(function (err, items) {
+                if (err) {
+                    senderror(err);
+                }
+                else {
+                    sendJSONresponse(res, 200, items);
                 }
             })
         }
