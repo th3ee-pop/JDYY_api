@@ -392,7 +392,7 @@ var functions = {
                 owner: '--',
                 responsible: '--',
                 origin: '--',
-                screenShot: ['']
+                screenShot: []
             });
             var report = Report({
                 patientID: d.patientID,
