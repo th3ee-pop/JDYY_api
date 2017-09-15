@@ -103,4 +103,6 @@ router.post('/getMessage', actions.getNewMessage);
 router.post('/updateMessage', actions.updateMessage);
 router.post('/deleteMessage', actions.deleteMessage);
 
+router.post('/get_all_sendMsg',actions.getAllSendMessage);
+
 module.exports = router;

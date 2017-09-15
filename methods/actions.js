@@ -858,6 +858,17 @@ var functions = {
         })
     },
 
+    getAllSendMessage: function(req,res){
+        console.log('send messages');
+        Message.find({'from':req.body.from }).exec(function(err, messages){
+            if(err){
+                console.log(err);
+                return;
+            }
+            sendJSONresponse(res,200,messages);
+        })
+}
+
 };
 
 module.exports = functions;
