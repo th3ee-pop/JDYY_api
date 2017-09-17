@@ -22,13 +22,14 @@ Sequence.statics.increment = function (schemaName, callback) {
 models.Sequence = mongoose.model('Sequence', Sequence);
 
 var messageSchema = new Schema({
-    topic:{type:String},
+    type:{type:String},
     title: {type: String},
     text: {type: String},
     from: {type: String},
     to: {type: String},
     date: {type: String},
-    state:{type:Boolean}
+    state:{type:Boolean},
+    link: { type: String }
 }
 );
 
