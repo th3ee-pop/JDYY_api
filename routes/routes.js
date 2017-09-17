@@ -2,6 +2,7 @@ var express = require('express');
 var actions = require('../methods/actions');
 var Newactions = require('../methods/NewActions');
 var MeetActions = require('../methods/MeetingAction');
+var Customized = require('../methods/CustomizeTemplate');
 
 var router = express.Router();
 
@@ -102,5 +103,11 @@ router.post('/getAllMessage', actions.getAllMessage);
 router.post('/getMessage', actions.getNewMessage);
 router.post('/updateMessage', actions.updateMessage);
 router.post('/deleteMessage', actions.deleteMessage);
+
+router.post('/create_template', Customized.createSchema);
+router.post('/save_temp', Customized.saveSchema);
+router.post('/get_temp', Customized.getModel);
+router.get('/delete_temp', Customized.deleteModel);
+router.get('/get_all_temp', Customized.getAllModel);
 
 module.exports = router;

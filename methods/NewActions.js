@@ -15,6 +15,7 @@ var config = require('../config/database');
 var jwt = require('jwt-simple');
 var nodemailer = require('nodemailer');
 var ejs = require('ejs');
+var userSchema = require('../model/user');
 
 
 var sendJSONresponse = function (res, status, content) {
@@ -426,7 +427,10 @@ var functions = {
     GetAllItems: function (req ,res) {
         Item.find().exec(function (err , items) {
             if(err) senderror(err);
-            else sendJSONresponse(res, 200, items);
+            else {
+                console.log(userSchema);
+                sendJSONresponse(res, 200, items);
+            }
         })
     },
 

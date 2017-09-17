@@ -12,6 +12,15 @@ var jwt = require('jwt-simple');
 var nodemailer = require('nodemailer');
 var ejs = require('ejs');
 
+var getTime = function () {
+    // 格式化日期，获取今天的日期
+    var dates = new Date();
+    var year = dates.getFullYear();
+    var month = ( dates.getMonth() + 1 ) < 10 ? '0' + ( dates.getMonth() + 1 ) : ( dates.getMonth() + 1 );
+    var day = dates.getDate() < 10 ? '0' + dates.getDate() : dates.getDate();
+    var time = year + '-' + month + '-' + day;
+    return time;
+};
 
 var sendJSONresponse = function (res, status, content) {
     console.log(content);
@@ -681,7 +690,8 @@ var functions = {
             'diagnosis': req.body.diagnosis,
             'status': req.body.status,
             'initial': false,
-            'reportDoc': req.body.reportDoc
+            'reportDoc': req.body.reportDoc,
+            'reporttime': getTime()
         }, function (err,doc) {
             if (err) throw err;
             sendJSONresponse(res,200,{success:true})
