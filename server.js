@@ -4,11 +4,13 @@ var mongoose = require('mongoose');
     morgan = require('morgan');
     config = require('./config/database');
     passport = require('passport');
-    routes = require('./routes/routes');
     bodyParser = require('body-parser');
-    
+    mongoose.connect(config.database);
 
-mongoose.connect(config.database);
+
+    routes = require('./routes/routes');
+
+
 
 // mongoose.connection.on('open', function(){
 //     console.log('Mongo is connected');

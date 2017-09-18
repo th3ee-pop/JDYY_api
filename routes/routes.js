@@ -104,11 +104,18 @@ router.post('/getMessage', actions.getNewMessage);
 router.post('/updateMessage', actions.updateMessage);
 router.post('/deleteMessage', actions.deleteMessage);
 
-router.post('/create_template', Customized.createSchema);
+
 router.post('/save_temp', Customized.saveSchema);
 router.post('/get_temp', Customized.getModel);
 router.get('/delete_temp', Customized.deleteModel);
 router.get('/get_all_temp', Customized.getAllModel);
+
 router.post('/get_all_sendMsg',actions.getAllSendMessage);
+
+router.post('/create_template', Customized.createSchema);
+router.get('/get_template', Customized.getTemplate);
+router.post('/get_temp_report', Customized.getTheReport);
+router.post('/save_report', Customized.SaveReport);
+router.post('/delete_temp_report', Customized.deleteTempReport);
 
 module.exports = router;
