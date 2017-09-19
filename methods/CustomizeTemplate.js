@@ -44,14 +44,25 @@ var functions = {
                 format: req.body.format
             });
             console.log(Template);
-        Template.save(function(err){
-            if (err){
-                res.json({success:false, msg:'Failed to save'})
-            }
+           var promise = temp.findOne({'tempName':req.body.tempName}).exec(function(err, template){
+                if (template) {
+                    temp.findOneAndRemove({'tempName': req.body.tempName}).exec(function () {
+                        console.log('temp covered');
+                    })
+                } else {
+                    console.log('new temp');
+                }
+            });
+        promise.then(function(){
+            Template.save(function(err){
+                if (err){
+                    res.json({success:false, msg:'Failed to save'})
+                }
 
-            else {
-                res.json({success:true, msg:'Successfully saved'});
-            }
+                else {
+                    res.json({success:true, msg:'Successfully saved'});
+                }
+            })
         })
     },
     
