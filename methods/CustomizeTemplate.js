@@ -89,9 +89,21 @@ var functions = {
     
     createSchema: function (req, res) {
         var inital_temp = template(req.body);
-        inital_temp.save(function (err) {
-            if (err) senderror(err);
-            else sendJSONresponse(res, 200, {success:true})
+        var promise = template.findOne({'templateName':req.body.templateName}).exec(function (err, temp) {
+            if (temp) {
+                template.findOneAndRemove({'templateName':req.body.templateName}).exec(function (err) {
+                    if (err) senderror(err);
+                    else console.log('delete success');
+                })
+            } else {
+                console.log('inital schema')
+            }
+        });
+        promise.then(function(){
+            inital_temp.save(function (err) {
+                if (err) senderror(err);
+                else sendJSONresponse(res, 200, {success:true})
+            })
         })
     },
 
