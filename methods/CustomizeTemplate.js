@@ -15,11 +15,21 @@ var sendJSONresponse = function (res, status, content) {
     res.json(content);
 };
 
+var createSchema = function (attributes) {
+    console.log(attributes);
+    var targetSchema = {};
+    attributes.forEach(function (attr) {
+        targetSchema[attr.name] = attr.type;
+    });
+    console.log(targetSchema);
+    return targetSchema;
+};
 
 var compileModel = function (tempName) {
    return template.findOne({'templateName': tempName}).exec(function (err, temp) {
         if (compiler !== tempName) {
-            mongoose.model(tempName, new Schema(temp.attributes));
+          //  mongoose.model(tempName, new Schema(temp.attributes));
+            mongoose.model(tempName, new Schema(createSchema(temp.attributes)));
             compiler = tempName;
         } else {
             console.log('already compiled')
@@ -106,6 +116,12 @@ var functions = {
             })
         })
     },
+    getSchema: function (req, res) {
+        template.findOne({'templateName': req.body.templateName}).exec(function (err, temp) {
+            if (err) senderror(err)
+            else sendJSONresponse(res, 200, temp);
+        })
+    },
 
     getTheReport: function (req, res) {
         var conn = mongoose.connect('mongodb://localhost:27017');
@@ -122,7 +138,7 @@ var functions = {
         var conn = mongoose.connect('mongodb://localhost:27017');
         compileModel(req.body.templateName).then(function () {
             var Model = conn.model(req.body.templateName);
-            var newRecord = Model(req.body.attributes);
+            var newRecord = Model(createSchema(req.body.attributes));
             newRecord.save(function (err) {
                 if (err) senderror(err);
                 else sendJSONresponse(res, 200, {save_success:true})

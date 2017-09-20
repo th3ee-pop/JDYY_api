@@ -113,6 +113,7 @@ router.get('/get_all_temp', Customized.getAllModel);
 router.post('/get_all_sendMsg',actions.getAllSendMessage);
 
 router.post('/create_template', Customized.createSchema);
+router.post('/get_schema', Customized.getSchema);
 router.get('/get_template', Customized.getTemplate);
 router.post('/get_temp_report', Customized.getTheReport);
 router.post('/save_report', Customized.SaveReport);

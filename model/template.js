@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 var tempSchema = new Schema(
     {
         templateName: String,
-        attributes: Object
+        attributes: Array
     }
 );
 
