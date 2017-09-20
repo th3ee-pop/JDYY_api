@@ -19,7 +19,16 @@ var createSchema = function (attributes) {
     console.log(attributes);
     var targetSchema = {};
     attributes.forEach(function (attr) {
-        targetSchema[attr.name] = attr.type;
+        console.log(attr.name);
+        if (attr.name === 'diagnosis')
+        {
+            targetSchema['diagnosis'] = attr.type;
+        } else if (attr.name === 'description') {
+            targetSchema['description'] = attr.type;
+        } else {
+            targetSchema[attr.name] = attr.type;
+        }
+
     });
     console.log(targetSchema);
     return targetSchema;
@@ -27,26 +36,31 @@ var createSchema = function (attributes) {
 
 var compileModel = function (tempName) {
    return template.findOne({'templateName': tempName}).exec(function (err, temp) {
-        if (compiler !== tempName) {
+        if (newSchema && compiledSchema !== SchemaToCompile) {
           //  mongoose.model(tempName, new Schema(temp.attributes));
             mongoose.model(tempName, new Schema(createSchema(temp.attributes)));
-            compiler = tempName;
+            newSchema = false;
+            compiledSchema = tempName;
+            SchemaToCompile = '';
+        } else if(compiledSchema === SchemaToCompile){
+           // newSchema = false;
+            compiledSchema = tempName;
         } else {
-            console.log('already compiled')
+            console.log('already compiled');
         }
     })
 };
 
-var senderror = function (err) {
+var senderror = function (err, res) {
     return res.status(403).send({msg: 'Something Wrong', error: err});
 };
 
-var compiler = 'null';
+var newSchema = true;
+var SchemaToCompile = '';
+var compiledSchema = '';
 
 var functions = {
 
-
-    
     saveSchema: function (req, res) {
         console.log(req.body);
             var Template = temp({
@@ -98,6 +112,9 @@ var functions = {
     },
     
     createSchema: function (req, res) {
+        newSchema = true;
+        SchemaToCompile = req.body.templateName;
+        compiledSchema = '';
         var inital_temp = template(req.body);
         var promise = template.findOne({'templateName':req.body.templateName}).exec(function (err, temp) {
             if (temp) {
@@ -118,7 +135,7 @@ var functions = {
     },
     getSchema: function (req, res) {
         template.findOne({'templateName': req.body.templateName}).exec(function (err, temp) {
-            if (err) senderror(err)
+            if (err) senderror(err);
             else sendJSONresponse(res, 200, temp);
         })
     },
@@ -135,12 +152,12 @@ var functions = {
     },
 
     SaveReport: function (req, res) {
-        var conn = mongoose.connect('mongodb://localhost:27017');
         compileModel(req.body.templateName).then(function () {
+            var conn = mongoose.connect('mongodb://localhost:27017');
             var Model = conn.model(req.body.templateName);
-            var newRecord = Model(createSchema(req.body.attributes));
-            newRecord.save(function (err) {
-                if (err) senderror(err);
+            console.log(Model(createSchema(req.body.attributes)));
+            Model(createSchema(req.body.attributes)).save(function (err) {
+                if (err) senderror(err, res);
                 else sendJSONresponse(res, 200, {save_success:true})
             })
         });
@@ -151,7 +168,7 @@ var functions = {
         console.log(compileModel(req.body.templateName));
         compileModel(req.body.templateName).then(function () {
             conn.model(req.body.templateName).remove().exec(function (err) {
-                if(err) senderror(err);
+                if(err) senderror(err ,res);
                 else sendJSONresponse(res, 200, {delete_success:true});
             })
         });
@@ -159,7 +176,7 @@ var functions = {
 
     getTemplate: function (req, res) {
         template.find().exec(function (err, temps) {
-            if (err) senderror(err);
+            if (err) senderror(err,res);
             else sendJSONresponse(res, 200, temps)
         })
     }
