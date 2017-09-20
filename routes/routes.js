@@ -3,8 +3,15 @@ var actions = require('../methods/actions');
 var Newactions = require('../methods/NewActions');
 var MeetActions = require('../methods/MeetingAction');
 var Customized = require('../methods/CustomizeTemplate');
-
+var ReportAction = require('../methods/ReportAction');
 var router = express.Router();
+
+router.post('/addTree', ReportAction.Addtree);
+router.post('/getTree', ReportAction.Gettree);
+router.post('/updateTree', ReportAction.Updatetree);
+router.post('/getTemplate',ReportAction.Gettemplate);
+router.post('/addTemplate',ReportAction.Addtemplate);
+router.post('/updateTemplate',ReportAction.Updatetemplate);
 
 router.post('/additem', actions.addItem);
 router.post('/getitembyPid', actions.getItemByPID);
@@ -31,12 +38,9 @@ router.post('/getherodetail', actions.getHeroDetail);
 router.post('/updatehero', actions.updateHero);
 router.post('/deletehero', actions.deleteHero);
 router.post('/sendmail', actions.sendMail);
-
 router.get('/remove_user', actions.RemoveAllDoctors);
 router.get('/refresh_user', actions.RefreshUser);
-
 router.get('/getdoctors', actions.getDoctors);
-
 router.post('/addreport', actions.addReport);
 router.post('/getreport', actions.getReport);
 router.get('/getallreport', actions.getAllReport);

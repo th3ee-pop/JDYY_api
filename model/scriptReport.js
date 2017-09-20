@@ -14,7 +14,4 @@ var scriptSchema = new Schema({
         major: {type: Boolean}
     }
 );
-
-
-
 module.exports = mongoose.model('ScriptReport', scriptSchema);

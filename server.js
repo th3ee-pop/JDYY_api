@@ -12,6 +12,15 @@ var mongoose = require('mongoose');
 
 
 
+/*    DB_URL = 'mongodb://localhost:27017/reporttemplate';
+    
+
+mongoose.connect(DB_URL,{useMongoClient: true});
+mongoose.connection.on('connected', function () {
+    console.log('Mongoose connection open to ' + DB_URL);
+});*/
+
+
 // mongoose.connection.on('open', function(){
 //     console.log('Mongo is connected');
     var app = express();
