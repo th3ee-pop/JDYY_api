@@ -446,6 +446,97 @@ var functions = {
             if(err) senderror(err);
             else sendJSONresponse(res, 200, items);
         })
+    },
+
+    SendWidgets: function (req, res) {
+        var widgets = [
+            {
+                'name': 'patientID',
+                'type': 'String',
+                'explanation': '患者的唯一ＩＤ'
+            },
+            {
+                'name': 'examID',
+                'type': 'String',
+                'explanation': '影像记录的唯一ＩＤ'
+            },
+            {
+                'name': 'name',
+                'type': 'String',
+                'explanation': '患者在就诊时提供的姓名信息'
+            },
+            {
+                'name': 'gender',
+                'type': 'String',
+                'explanation': '患者的性别信息'
+            },
+            {
+                'name': 'age',
+                'type': 'String',
+                'explanation': '患者的年龄信息'
+            },
+            {
+                'name': 'office',
+                'type': 'String',
+                'explanation': '报告所属部门'
+            },
+            {
+                'name': 'examContent',
+                'type': 'String',
+                'explanation': '患者的检查信息，包括检查的类型'
+            },
+            {
+                'name': 'examPart',
+                'type': 'String',
+                'explanation': '患者的检查部位'
+            },
+            {
+                'name': 'date',
+                'type': 'String',
+                'explanation': '影像的生成日期'
+            },
+            {
+                'name': 'reporttime',
+                'type': 'String',
+                'explanation': '报告的生成时间'
+            },
+            {
+                'name': 'description',
+                'type': 'String',
+                'explanation': '报告的影像所见信息'
+            },
+            {
+                'name': 'diagnosis',
+                'type': 'String',
+                'explanation': '报告的诊断意见'
+            },
+            {
+                'name': 'status',
+                'type': 'String',
+                'explanation': '报告的诊断状态'
+            },
+            {
+                'name': 'reportDoc',
+                'type': 'String',
+                'explanation': '影像报告的书写医生'
+            },
+            {
+                'name': 'verifyDoc',
+                'type': 'String',
+                'explanation': '影像报告的审核医生'
+            },
+            {
+                'name': 'initial',
+                'type': 'Boolean',
+                'explanation': '报告是否由初始化生成'
+            },
+            {
+                'name': 'screenShots',
+                'type': 'Array',
+                'explanation': '报告的所有相关截图信息'
+            }
+        ];
+        sendJSONresponse(res, 200, widgets);
     }
 };
 

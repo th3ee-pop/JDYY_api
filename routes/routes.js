@@ -123,4 +123,6 @@ router.post('/get_temp_report', Customized.getTheReport);
 router.post('/save_report', Customized.SaveReport);
 router.post('/delete_temp_report', Customized.deleteTempReport);
 
+router.get('/get_widgets', Newactions.SendWidgets);
+
 module.exports = router;

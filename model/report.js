@@ -23,6 +23,7 @@ var reportSchema = new Schema({
         reportDoc: {type: String},
         verifyDoc: {type: String},
         initial: {type: Boolean},
+        screenShots: {type: Array}
     }
 );
 
