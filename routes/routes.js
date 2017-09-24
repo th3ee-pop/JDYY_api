@@ -12,6 +12,10 @@ router.post('/updateTree', ReportAction.Updatetree);
 router.post('/getTemplate',ReportAction.Gettemplate);
 router.post('/addTemplate',ReportAction.Addtemplate);
 router.post('/updateTemplate',ReportAction.Updatetemplate);
+router.post('/deleteTree',ReportAction.Deletetree);
+router.get('/getallTree',ReportAction.GetAlltree);
+router.get('/saveallTemp', ReportAction.Savetemplate);
+router.get('/deleteallTemp', ReportAction.DeleteAllLocalTemplate);
 
 router.post('/additem', actions.addItem);
 router.post('/getitembyPid', actions.getItemByPID);
