@@ -8,7 +8,9 @@
 var Meet = require('../model/meetItem');
 var ScriptReport = require('../model/scriptReport');
 var Report = require('../model/report');
+var NewReport = require('../model/newReport');
 var Item = require('../model/item');
+var Temp = require('../model/saveTemp');
 var ReportRecord = require('../model/reportRecord');
 var mongoose = require('mongoose');
 var config = require('../config/database');
@@ -76,24 +78,23 @@ var functions = {
             });
             participant.forEach(function (p) {
                 var isMajor = p === req.body.owner;
-                var newItem = ScriptReport({
-                    examID: req.body.examID,
-                    meetID: meetingID,
-                    description: '暂无',
-                    diagnosis: '暂无',
-                    picID: '暂无',
-                    completedBy: p,
-                    time: req.body.date,
-                    major: isMajor
-                });
-                newItem.save(function (err) {
-                    if(err) {
-                        senderror(err);
-                    } else {
-                      //  sendJSONresponse(res, 200, {success: true});
-                        console.log('save success');
-                    }
-                });
+                Temp.findOne({'hospital': req.body.hospital}).exec(function (err, temp) {
+                    var newItem = ScriptReport({
+                        examID: req.body.examID,
+                        meetID: meetingID,
+                        format: temp.format,
+                        completedBy: p,
+                        major: isMajor
+                    });
+                    newItem.save(function (err) {
+                        if(err) {
+                            senderror(err);
+                        } else {
+                            //  sendJSONresponse(res, 200, {success: true});
+                            console.log('save script success');
+                        }
+                    });
+                })
             })
         }
     },
@@ -183,8 +184,17 @@ var functions = {
           }
         },*/
 
-    getAllScript: function (req, res) {
+    getScript: function (req, res) {
         ScriptReport.find({'meetID': req.body.meetID}).exec(function (err, scripts) {
+            if (err) {
+                senderror(err);
+            } else {
+                sendJSONresponse(res, 200, scripts);
+            }
+        })
+    },
+    getAllScript: function (req, res) {
+        ScriptReport.find().exec(function (err, scripts) {
             if (err) {
                 senderror(err);
             } else {
@@ -205,9 +215,7 @@ var functions = {
 
     updateScript: function (req, res) {
         ScriptReport.findOneAndUpdate({'$and':[{'meetID': req.body.meetID},{'completedBy': req.body.completedBy}]}, {
-            'description': req.body.description,
-            'diagnosis': req.body.diagnosis,
-            'picID': req.body.picID
+            'format': req.body.format
         }, function (err, script) {
             if (err) throw err;
             else if(script)
@@ -229,7 +237,7 @@ var functions = {
     submitScript: function (req, res) {
        ScriptReport.findOne({'$and': [{'meetID': req.body.meetID},{'major': true}]}).exec(function (err, script) {
            console.log(script);
-           var reportUpdate = {
+           /*var reportUpdate = {
                'diagnosis': script.diagnosis,
                'description': script.description,
                'reportDoc': script.completedBy,
@@ -237,7 +245,7 @@ var functions = {
                'status': '诊断中',
                'reporttime': getTime(),
                'initial': false
-           };
+           };*/
            var record = ReportRecord({
                'examID': req.body.examID,
                'operate_type': '生成报告',
@@ -245,7 +253,12 @@ var functions = {
                'date': getTime()
            });
 
-           Report.findOneAndUpdate({'examID': req.body.examID}, reportUpdate, function (err) {
+           NewReport.findOneAndUpdate({'examID': req.body.examID}, {
+               'format': script.format,
+               'reportDoc': script.completedBy,
+               'verifyDoc': '暂无',
+               'initial': false
+           }, function (err) {
                if (err) senderror(err);
                console.log('update_report')
            });

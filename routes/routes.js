@@ -50,7 +50,7 @@ router.post('/getreport', actions.getReport);
 router.get('/getallreport', actions.getAllReport);
 router.post('/updatereport', actions.updateReport);
 router.post('/deletereport', actions.deleteReport);
-router.post('/update_customized_report', actions.NewUpdateReport);
+router.post('/update_new_report', actions.updateNewReport);
 
 router.post('/addreportrecord', actions.addReportRecord);
 router.post('/getrecord', actions.getRecord);
@@ -96,7 +96,8 @@ router.post('/get_meet', MeetActions.getMeetByID);
 router.get('/get_all_meet', MeetActions.getAllMeetItem);
 
 // router.post('/script_report', MeetActions.createScript);
-router.post('/get_script', MeetActions.getAllScript);
+router.post('/get_script', MeetActions.getScript);
+router.get('/get_all_script', MeetActions.getAllScript);
 router.post('/delete_script', MeetActions.deleteScript);
 router.post('/update_script', MeetActions.updateScript);
 router.post('/finish_meeting', MeetActions.submitScript);
@@ -119,6 +120,7 @@ router.post('/get_temp', Customized.getModel);
 router.get('/delete_temp', Customized.deleteModel);
 router.get('/get_all_temp', Customized.getAllModel);
 router.post('/get_local_temp', Customized.getModelByHospital);
+router.get('/get_all_new', Newactions.GetNewReport);
 
 router.post('/get_all_sendMsg',actions.getAllSendMessage);
 

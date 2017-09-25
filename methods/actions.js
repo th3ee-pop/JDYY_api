@@ -696,13 +696,25 @@ var functions = {
             sendJSONresponse(res,200,{success:true})
         })
     },
-    NewUpdateReport: function (req,res) {
+    updateNewReport: function (req,res) {
+        console.log(req.body.id);
+        Report.findOneAndUpdate({'examID':req.body.examID}, {
+            'format': req.body.format,
+            'reportDoc': req.body.reportDoc,
+            'verifyDoc': req.body.verifyDoc,
+            'initial': false
+        }, function (err) {
+            if (err) throw err;
+            sendJSONresponse(res,200,{success:true})
+        })
+    },
+   /* NewUpdateReport: function (req,res) {
         console.log(req.body.id);
         Report.findOneAndUpdate({'examID':req.body.examID}, req.body, function (err,doc) {
             if (err) throw err;
             sendJSONresponse(res,200,{update_success:true})
         })
-    },
+    },*/
     deleteReport: function (req,res) {
         console.log(req.body.examID);
         Report.findOneAndRemove({'examID':req.body.examID}, function (err,doc) {

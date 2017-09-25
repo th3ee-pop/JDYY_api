@@ -5,8 +5,10 @@ var User = require('../model/user');
 var Item = require('../model/item');
 var Hero = require('../model/hero');
 var Report = require('../model/report');
+var NewReport = require('../model/newReport');
 var ReportRecord = require('../model/reportRecord');
 var Group = require('../model/group');
+var Temp = require('../model/saveTemp');
 var Meet = require('../model/meetItem');
 var ReportPic = require('../model/reportPic');
 var Script = require('../model/scriptReport');
@@ -360,6 +362,10 @@ var functions = {
             if (err) senderror(err);
             console.log('reportPic_removed');
         });
+        NewReport.remove(true,function (err) {
+            if (err) senderror(err);
+            console.log('newReport_removed');
+        });
     },
 
     Refresh: function (req, res) {
@@ -371,6 +377,7 @@ var functions = {
             {'examID': 'F0000142', 'patientID':'0001176267', 'name':'王朋', 'gender':'男', 'age':'45', 'examContent': 'ECT', 'examPart': '全身骨显像', 'sendHospital':'交大一附院', 'time': '2015-01-07'}
             ];
         NewItems.forEach(function (d) {
+            var mainID = d.examID;
             var item = Item({
                 patientID: d.patientID,
                 examID: d.examID,
@@ -416,8 +423,26 @@ var functions = {
                 hospital: '--',
                 birthday: '--',
                 positive: '--',
-                frequency: '--',
+                frequency: '--'
             });
+
+            Temp.findOne({'hospital': d.sendHospital}).exec(function (err, temp) {
+                if (err) senderror(err);
+                else {
+                    var newReport = NewReport({
+                        examID: mainID,
+                        format: temp.format,
+                        reportDoc: '--',
+                        verifyDoc: '--',
+                        initial: true
+                    });
+                    newReport.save(function (err) {
+                        if (err) senderror(err);
+                        console.log("new report saved");
+                    })
+                }
+            });
+
                 item.save(function (err) {
                 if (err) senderror(err);
                console.log('successfully saved');
@@ -428,6 +453,13 @@ var functions = {
             });
         });
         sendJSONresponse(res, 200, {success: true});
+    },
+
+    GetNewReport: function (req, res) {
+        NewReport.find().exec(function (err, reports) {
+            if (err) senderror(err);
+            else sendJSONresponse(res, 200, reports);
+        })
     },
 
     GetAllItems: function (req ,res) {
@@ -544,7 +576,7 @@ var functions = {
             {
                 'name': 'hospital',
                 'type': 'String',
-                'explanation': '报告的所有相关截图信息'
+                'explanation': '报告的所在医院'
             },
             {
                 'name': 'birthday',
