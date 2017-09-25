@@ -65,6 +65,7 @@ var functions = {
         console.log(req.body);
             var Template = temp({
                 tempName: req.body.tempName,
+                hospital: req.body.hospital,
                 format: req.body.format
             });
             console.log(Template);
@@ -95,6 +96,17 @@ var functions = {
             if (err) senderror(err);
             else sendJSONresponse(res, 200, temp);
         })
+    },
+
+    getModelByHospital: function (req ,res) {
+        var HospitalModel = [];
+        temp.find({'hospital': req.body.hospital}).exec(function (err, temp) {
+                temp.forEach(function (d) {
+                    console.log(d);
+                    HospitalModel.push(d.tempName);
+                })
+            sendJSONresponse(res, 200, HospitalModel);
+        });
     },
 
     getAllModel: function (req ,res) {

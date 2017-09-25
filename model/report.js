@@ -12,7 +12,6 @@ var reportSchema = new Schema({
         name: {type: String},
         gender: {type: String},
         age: {type: String},
-        office: {type: String},
         examContent: {type: String},
         examPart: {type: String},
         date: {type: String},
@@ -23,7 +22,12 @@ var reportSchema = new Schema({
         reportDoc: {type: String},
         verifyDoc: {type: String},
         initial: {type: Boolean},
-        screenShots: {type: Array}
+        screenShots: {type: Array},
+        tempName: {type: String},
+        hospital: {type: String},
+        birthday: {type: String},
+        positive: {type: String},
+        frequency: {type: String}
     }
 );
 

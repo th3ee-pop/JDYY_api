@@ -12,6 +12,7 @@ var Schema = mongoose.Schema;
 var tempSchema = new Schema(
     {
        tempName: String,
+       hospital: String,
        format: Object
     }
 );

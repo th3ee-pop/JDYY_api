@@ -526,14 +526,34 @@ var functions = {
                 'explanation': '影像报告的审核医生'
             },
             {
-                'name': 'initial',
-                'type': 'Boolean',
-                'explanation': '报告是否由初始化生成'
-            },
-            {
                 'name': 'screenShots',
                 'type': 'Array',
                 'explanation': '报告的所有相关截图信息'
+            },
+            {
+                'name': 'tempName',
+                'type': 'String',
+                'explanation': '报告所使用的模板名称'
+            },
+            {
+                'name': 'hospital',
+                'type': 'String',
+                'explanation': '报告的所有相关截图信息'
+            },
+            {
+                'name': 'birthday',
+                'type': 'String',
+                'explanation': '患者的出生日期'
+            },
+            {
+                'name': 'positive',
+                'type': 'String',
+                'explanation': '检查呈阴性或阳性'
+            },
+            {
+                'name': 'frequency',
+                'type': 'String',
+                'explanation': '患者的检查次数或第几次检查'
             }
         ];
         sendJSONresponse(res, 200, widgets);

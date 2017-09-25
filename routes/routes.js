@@ -117,6 +117,7 @@ router.post('/save_temp', Customized.saveSchema);
 router.post('/get_temp', Customized.getModel);
 router.get('/delete_temp', Customized.deleteModel);
 router.get('/get_all_temp', Customized.getAllModel);
+router.post('/get_local_temp', Customized.getModelByHospital);
 
 router.post('/get_all_sendMsg',actions.getAllSendMessage);
 
