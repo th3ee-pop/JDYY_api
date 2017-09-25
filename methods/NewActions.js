@@ -410,7 +410,13 @@ var functions = {
                 status: '--',
                 description: '--',
                 diagnosis: '--',
-                initial: true
+                initial: true,
+                screenShots: [],
+                tempName: '--',
+                hospital: '--',
+                birthday: '--',
+                positive: '--',
+                frequency: '--',
             });
                 item.save(function (err) {
                 if (err) senderror(err);

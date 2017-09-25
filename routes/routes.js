@@ -50,6 +50,7 @@ router.post('/getreport', actions.getReport);
 router.get('/getallreport', actions.getAllReport);
 router.post('/updatereport', actions.updateReport);
 router.post('/deletereport', actions.deleteReport);
+router.post('/update_customized_report', actions.NewUpdateReport);
 
 router.post('/addreportrecord', actions.addReportRecord);
 router.post('/getrecord', actions.getRecord);
