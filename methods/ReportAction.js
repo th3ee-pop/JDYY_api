@@ -146,6 +146,12 @@ var functions = {
         console.log(templates);*/
     },
 
+    GetAllTemplate: function (req, res) {
+       ReportTemplate.find().exec(function (err, temps) {
+           sendJSONresponse(res, 200, temps);
+       })
+    },
+
     DeleteAllLocalTemplate: function (req, res) {
         var senderror = function (err) {
             return res.status(403).send({msg: 'Something Wrong', error: err});

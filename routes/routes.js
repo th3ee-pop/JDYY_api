@@ -13,6 +13,7 @@ router.post('/getTemplate',ReportAction.Gettemplate);
 router.post('/addTemplate',ReportAction.Addtemplate);
 router.post('/updateTemplate',ReportAction.Updatetemplate);
 router.post('/deleteTree',ReportAction.Deletetree);
+router.get('/getallTemp', ReportAction.GetAllTemplate);
 router.get('/getallTree',ReportAction.GetAlltree);
 router.get('/saveallTemp', ReportAction.Savetemplate);
 router.get('/deleteallTemp', ReportAction.DeleteAllLocalTemplate);

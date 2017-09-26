@@ -707,13 +707,8 @@ var functions = {
         })
     },
     updateNewReport: function (req,res) {
-        console.log(req.body.id);
-        NewReport.findOneAndUpdate({'examID':req.body.examID}, {
-            'format': req.body.format,
-            'reportDoc': req.body.reportDoc,
-            'verifyDoc': req.body.verifyDoc,
-            'initial': false
-        }, function (err) {
+        console.log(req.body);
+        NewReport.findOneAndUpdate({'examID':req.body.examID}, req.body, function (err) {
             if (err) throw err;
             sendJSONresponse(res,200,{success:true})
         })
