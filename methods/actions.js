@@ -4,6 +4,7 @@ var User = require('../model/user');
 var Item = require('../model/item');
 var Hero = require('../model/hero');
 var Report = require('../model/report');
+var NewReport = require('../model/newReport');
 var ReportRecord = require('../model/reportRecord');
 var Group = require('../model/group');
 var mongoose = require('mongoose');
@@ -663,7 +664,16 @@ var functions = {
     },
 
     getReport: function(req,res){
-        Report.find({'examID': req.body.examID}).exec(function (err , report){
+        Report.findOne({'examID': req.body.examID}).exec(function (err , report){
+            if(err){
+                console.log(err);
+                return;
+            }
+            sendJSONresponse(res,200,report);
+        });
+    },
+    getNewReport: function(req,res){
+        NewReport.findOne({'examID': req.body.examID}).exec(function (err , report){
             if(err){
                 console.log(err);
                 return;
@@ -698,7 +708,7 @@ var functions = {
     },
     updateNewReport: function (req,res) {
         console.log(req.body.id);
-        Report.findOneAndUpdate({'examID':req.body.examID}, {
+        NewReport.findOneAndUpdate({'examID':req.body.examID}, {
             'format': req.body.format,
             'reportDoc': req.body.reportDoc,
             'verifyDoc': req.body.verifyDoc,

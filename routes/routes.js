@@ -47,6 +47,7 @@ router.get('/refresh_user', actions.RefreshUser);
 router.get('/getdoctors', actions.getDoctors);
 router.post('/addreport', actions.addReport);
 router.post('/getreport', actions.getReport);
+router.post('/get_report', actions.getNewReport);
 router.get('/getallreport', actions.getAllReport);
 router.post('/updatereport', actions.updateReport);
 router.post('/deletereport', actions.deleteReport);
