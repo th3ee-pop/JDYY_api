@@ -192,6 +192,7 @@ var functions = {
             else sendJSONresponse(res, 200, temps)
         })
     }
+
 };
 
 

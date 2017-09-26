@@ -12,6 +12,7 @@ var NewReport = require('../model/newReport');
 var Item = require('../model/item');
 var Temp = require('../model/saveTemp');
 var ReportRecord = require('../model/reportRecord');
+var User = require('../model/user');
 var mongoose = require('mongoose');
 var config = require('../config/database');
 var jwt = require('jwt-simple');
@@ -78,22 +79,27 @@ var functions = {
             });
             participant.forEach(function (p) {
                 var isMajor = p === req.body.owner;
-                Temp.findOne({'hospital': req.body.hospital}).exec(function (err, temp) {
-                    var newItem = ScriptReport({
-                        examID: req.body.examID,
-                        meetID: meetingID,
-                        format: temp.format,
-                        completedBy: p,
-                        major: isMajor
-                    });
-                    newItem.save(function (err) {
-                        if(err) {
-                            senderror(err);
-                        } else {
-                            //  sendJSONresponse(res, 200, {success: true});
-                            console.log('save script success');
-                        }
-                    });
+                var nowHospital = '';
+                var promise = User.findOne({'name':req.body.owner}).exec(function (err, user) {
+                    nowHospital = user.hospital;
+                });
+                promise.then(function () {
+                    Temp.findOne({'hospital': nowHospital}).exec(function (err, temp) {
+                        var newItem = ScriptReport({
+                            examID: req.body.examID,
+                            meetID: meetingID,
+                            format: temp.format,
+                            completedBy: p,
+                            major: isMajor
+                        });
+                        newItem.save(function (err) {
+                            if(err) {
+                                senderror(err);
+                            } else {
+                                console.log('save script success');
+                            }
+                        });
+                    })
                 })
             })
         }
