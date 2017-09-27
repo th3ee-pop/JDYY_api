@@ -181,7 +181,11 @@ var functions = {
         });
     },
     getDoctors: function(req, res){
-        User.find({'usertype': 'specialist'}).exec(function (err, users){
+        User.find({'$and':[
+            {'usertype': 'specialist'},
+            {'status': '有效'},
+            {'$or':[{'level':['二线医师']},{'level':['一线医师']}]}
+            ]}).exec(function (err, users){
             if(err){
                 console.log(err);
                 return;
