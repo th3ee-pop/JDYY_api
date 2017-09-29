@@ -2,6 +2,7 @@ var express = require('express');
 var actions = require('../methods/actions');
 var Newactions = require('../methods/NewActions');
 var MeetActions = require('../methods/MeetingAction');
+var friendActions = require('../methods/friendActions');
 
 var router = express.Router();
 
@@ -102,7 +103,13 @@ router.post('/getAllMessage', actions.getAllMessage);
 router.post('/getMessage', actions.getNewMessage);
 router.post('/updateMessage', actions.updateMessage);
 router.post('/deleteMessage', actions.deleteMessage);
-
 router.post('/get_all_sendMsg',actions.getAllSendMessage);
+
+// router.post('/addFriend',friendActions.addFriend );
+router.post('/getFriendShip',friendActions.getFriendShip);
+router.get('/refreshFriendShip',friendActions.refreshFriendShip);
+router.post('/acceptFriend',friendActions.acceptFriend);
+router.post('/requestFriend',friendActions.requestFriend);
+router.post('/deleteFriend',friendActions.deleteFriend );
 
 module.exports = router;
