@@ -193,6 +193,18 @@ var functions = {
             sendJSONresponse(res,200,users);
         });
     },
+    getLocalUsers: function (req, res) {
+        User.find({'$and': [
+            {'usertype': 'specialist'},
+            {'status': '有效'},
+            {'hospital': req.body.hospital}
+        ]}).exec(function (err, users) {
+            if (err) {
+                console.log(err);
+                return;
+            }sendJSONresponse(res, 200, users);
+        })
+    },
     getUserByName: function(req, res){
         User.findOne({'name': req.body.name}).exec(function (err, user){
             if(err){

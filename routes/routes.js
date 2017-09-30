@@ -46,6 +46,7 @@ router.post('/sendmail', actions.sendMail);
 router.get('/remove_user', actions.RemoveAllDoctors);
 router.get('/refresh_user', actions.RefreshUser);
 router.get('/getdoctors', actions.getDoctors);
+router.post('/get_local_doctors', actions.getLocalUsers);
 router.post('/addreport', actions.addReport);
 router.post('/getreport', actions.getReport);
 router.post('/get_report', actions.getNewReport);
